@@ -1,0 +1,375 @@
+/* ==========================================================================
+   CLAY FIT — DESIGN SYSTEM "STUDIO CLAY" & "STUDIO CLAY NOITE" (v0.7.1)
+   /css/tokens.css
+   Especificação Prompt 5 + Prompt 5.1 + Prompt 7.1 (Parte A1 & A3):
+   - Tema padrão: Escuro ("Studio Clay Noite") em :root e [data-theme="escuro"].
+   - Tema Claro: preservado em [data-theme="claro"] com os mesmos nomes de token.
+   - Modo Energia (#E2573B) e Corrida ao Vivo (#15130F / #201D19) fixos nos dois temas.
+   - Família completa de tokens de ilustração (--ill-terracota, --ill-argila,
+     --ill-areia, --ill-corpo-base, --ill-corpo-contorno, --ill-corpo-linha,
+     --ill-tinta), superfícies (--vidro, --sombra-1, --sombra-2, --linha-forte)
+     definida nos dois temas (zero var(--...) indefinida em todo o projeto).
+   ========================================================================== */
+
+:root,
+[data-theme="escuro"] {
+  color-scheme: dark;
+
+  /* --- A2: Superfícies e Tinta (Tema Escuro "Studio Clay Noite") --- */
+  --fundo: #0E0D0C;
+  --superficie: #1A1816;
+  --superficie-2: #25221F;
+  --linha: #34302B;
+  --linha-forte: #4D4740;
+  --tinta: #F4F1EA;
+  --tinta-2: #CFC9BD;
+  --tinta-3: #A39D92;
+
+  /* Canais RGB para composições translúcidas sem rgba/hex solto (C5) */
+  --fundo-rgb: 14, 13, 12;
+  --superficie-rgb: 26, 24, 22;
+  --superficie-2-rgb: 37, 34, 31;
+  --tinta-rgb: 244, 241, 234;
+  --terracota-rgb: 226, 87, 59;
+  --terracota-profundo-rgb: 185, 63, 39;
+  --salvia-rgb: 143, 166, 138;
+  --areia-rgb: 217, 185, 138;
+  --erro-rgb: 229, 100, 90;
+  --corrida-amber-rgb: 200, 138, 46;
+  --creme-fixo: #FFF8F0;
+  --creme-fixo-rgb: 255, 248, 240;
+  --energia-fg-rgb: 255, 248, 240;
+  --carvao-fixo: #151515;
+  --carvao-fixo-rgb: 21, 21, 21;
+
+  /* --- A2: Marca e Apoio --- */
+  --terracota: #E2573B;
+  --terracota-grad-topo: #EA6246;
+  --terracota-texto: #F0735A;
+  --terracota-profundo: #B93F27;
+  --terracota-suave: rgba(226, 87, 59, 0.16);
+  --salvia: #8FA68A;
+  --salvia-texto: #A9C0A4;
+  --salvia-suave: rgba(143, 166, 138, 0.16);
+  --areia: #D9B98A;
+  --areia-suave: rgba(217, 185, 138, 0.16);
+
+  /* --- A2: Estados Semânticos (suaves = 16% de opacidade) --- */
+  --sucesso: #6FBF82;
+  --sucesso-suave: rgba(111, 191, 130, 0.16);
+  --alerta: #E3A93B;
+  --alerta-suave: rgba(227, 169, 59, 0.16);
+  --erro: #E5645A;
+  --erro-suave: rgba(229, 100, 90, 0.16);
+
+  /* --- A2: Superfícies de Vidro --- */
+  --vidro: rgba(37, 34, 31, 0.62);
+  --vidro-bg: rgba(37, 34, 31, 0.62);
+  --vidro-borda: rgba(244, 241, 234, 0.08);
+  --vidro-sombra-interna: inset 0 1px 0 rgba(244, 241, 234, 0.06);
+  --vidro-blur: blur(18px) saturate(1.2);
+
+  /* --- A2 & V1a: Botões Primários com Brilho Terracota --- */
+  --btn-primario-bg: linear-gradient(180deg, #EA6246 0%, #E2573B 100%);
+  --btn-primario-shadow: 0 0 0 1px rgba(226, 87, 59, 0.5), 0 10px 30px -8px rgba(226, 87, 59, 0.55);
+  --btn-intro-continue-shadow: 0 0 0 1px rgba(226, 87, 59, 0.5), 0 10px 30px -8px rgba(226, 87, 59, 0.55);
+  --btn-primario-shadow-pressed: 0 0 0 1px rgba(226, 87, 59, 0.25), 0 5px 15px -4px rgba(226, 87, 59, 0.28);
+
+  /* --- A2: Sombras e Luz de Argila no Escuro --- */
+  --sombra-cor: rgba(0, 0, 0, 0.5);
+  --backdrop-scrim: rgba(0, 0, 0, 0.56);
+  --shadow-suave: 0 1px 0 rgba(244, 241, 234, 0.06), 0 8px 24px -8px var(--sombra-cor);
+  --shadow-elevada: 0 20px 48px -16px rgba(0, 0, 0, 0.68);
+  --sombra-1: var(--shadow-suave);
+  --sombra-2: var(--shadow-elevada);
+  --shadow-press: inset 0 3px 8px rgba(0, 0, 0, 0.55);
+  --shadow-fab: 0 0 0 1px rgba(226, 87, 59, 0.5), 0 10px 30px -8px rgba(226, 87, 59, 0.55);
+  --card-luz-argila: radial-gradient(120% 80% at 18% 0%, rgba(244, 241, 234, 0.045), transparent 60%);
+  --hoje-cena-glow: radial-gradient(68% 68% at 50% 50%, rgba(226, 87, 59, 0.10) 0%, transparent 74%);
+  --ambient-top-gradient: linear-gradient(180deg, rgba(26, 24, 22, 0.85) 0%, rgba(14, 13, 12, 0) 100%);
+  --grain-opacity: 0.05;
+  --focus-ring-color: var(--terracota-texto);
+  --focus-ring-offset: 3px;
+
+  /* --- A1 & A3 (Prompt 7.1): Tokens das Ilustrações e Mapa Muscular --- */
+  --ill-palco: radial-gradient(95% 95% at 78% 16%, rgba(226, 87, 59, 0.12) 0%, #25221F 74%);
+  --ill-palco-cor: #25221F;
+  --ill-contorno: #0E0D0C;
+  --ill-traco: #CFC9BD;
+  --ill-tinta: #CFC9BD;
+  --ill-argila: #E2573B;
+  --ill-terracota: #E2573B;
+  --ill-argila-profunda: #B93F27;
+  --ill-salvia: #8FA68A;
+  --ill-areia: #D9B98A;
+  --ill-creme: #F4F1EA;
+  --ill-sombra: #3D3833;
+  --ill-neutro: #34302B;
+  --ill-corpo-base: #3E3934;
+  --ill-corpo-contorno: #6E665D;
+  --ill-corpo-linha: #575048;
+  --placa-text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.85), 0 1px 0 rgba(21, 21, 21, 0.25);
+  --rota-grade: rgba(217, 185, 138, 0.08);
+  --rota-curva: rgba(217, 185, 138, 0.14);
+
+  /* Fundos de grupos na Biblioteca */
+  --grupo-ombros-bg: rgba(217, 185, 138, 0.14);
+  --grupo-bracos-bg: rgba(226, 87, 59, 0.14);
+  --grupo-core-bg: rgba(143, 166, 138, 0.14);
+
+  /* --- A4: Mapa de Calor Tokenizado (5 Níveis) --- */
+  --calor-0: #25221F;
+  --calor-1: rgba(143, 166, 138, 0.38);
+  --calor-2: #8FA68A;
+  --calor-3: #D9B98A;
+  --calor-4: #E2573B;
+
+  /* --- A2 & C5: Tokens Fixos do Modo Energia (Iguais nos Dois Temas) --- */
+  --energia-bg: #E2573B;
+  --energia-fg: #FFF8F0;
+  --energia-chip: #B93F27;
+  --energia-chip-2: rgba(21, 21, 21, 0.18);
+
+  /* --- A2: Tokens Fixos das Telas Ativas de Corrida (Iguais nos Dois Temas) --- */
+  --corrida-bg: #15130F;
+  --corrida-superficie: #201D19;
+  --corrida-fg: #FFF8F0;
+  --corrida-fg-2: #C9C2B6;
+  --corrida-fg-3: #9A9388;
+  --corrida-amber: #C88A2E;
+
+  /* --- Aliases Dinâmicos de Superfície/Texto --- */
+  --bg-app: var(--fundo);
+  --bg-card: var(--superficie);
+  --bg-card-alt: var(--superficie-2);
+  --text-primary: var(--tinta);
+  --text-secondary: var(--tinta-2);
+  --text-muted: var(--tinta-3);
+  --border-color: var(--linha);
+  --accent-primary: var(--terracota);
+  --accent-hover: var(--terracota-profundo);
+  --accent-soft: var(--terracota-suave);
+  --on-accent: #FFF8F0;
+
+  /* --- Tipografia --- */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-serif: 'Instrument Serif', 'Fraunces', Georgia, serif;
+  --font-sans: 'DM Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Escala tipográfica base (Mobile & Tablet < 1024px) */
+  --scale-factor: 1;
+
+  --fs-display: calc(44px * var(--scale-factor));
+  --lh-display: calc(48px * var(--scale-factor));
+  --ls-display: -0.02em;
+
+  --fs-h1: calc(32px * var(--scale-factor));
+  --lh-h1: calc(38px * var(--scale-factor));
+  --ls-h1: -0.015em;
+
+  --fs-h2: calc(24px * var(--scale-factor));
+  --lh-h2: calc(30px * var(--scale-factor));
+  --ls-h2: -0.01em;
+
+  --fs-h3: calc(18px * var(--scale-factor));
+  --lh-h3: calc(24px * var(--scale-factor));
+
+  --fs-body: calc(16px * var(--scale-factor));
+  --lh-body: calc(24px * var(--scale-factor));
+
+  --fs-small: calc(14px * var(--scale-factor));
+  --lh-small: calc(20px * var(--scale-factor));
+
+  --fs-caption: calc(12px * var(--scale-factor));
+  --lh-caption: calc(16px * var(--scale-factor));
+  --ls-caption: 0.08em;
+
+  --fs-metric: calc(56px * var(--scale-factor));
+  --lh-metric: calc(56px * var(--scale-factor));
+
+  --fs-timer: calc(96px * var(--scale-factor));
+  --lh-timer: calc(96px * var(--scale-factor));
+
+  /* --- Grade de espaçamento (4px base) --- */
+  --sp-4: 4px;
+  --sp-8: 8px;
+  --sp-12: 12px;
+  --sp-16: 16px;
+  --sp-20: 20px;
+  --sp-24: 24px;
+  --sp-32: 32px;
+  --sp-40: 40px;
+  --sp-56: 56px;
+  --sp-72: 72px;
+
+  /* --- Raios de borda --- */
+  --r-chip: 999px;
+  --r-btn: 16px;
+  --r-btn-giant: 28px;
+  --r-input: 14px;
+  --r-card: 24px;
+  --r-sheet: 32px;
+
+  /* --- Movimento & Curvas --- */
+  --ease-clay: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --dur-touch: 120ms;
+  --dur-state: 220ms;
+  --dur-screen: 360ms;
+  --dur-enter: 360ms;
+  --dur-exit: 240ms;
+  --dur-hero: 600ms;
+  --dur-stagger: 600ms;
+  --stagger-step: 60ms;
+  --stagger-index: 0;
+  --live-toast-top: 16px;
+
+  /* --- Dimensões de Layout --- */
+  --nav-mobile-h: 72px;
+  --rail-tablet-w: 88px;
+  --sidebar-desktop-w: 264px;
+  --content-max-w: 1120px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* ==========================================================================
+   TEMA CLARO "STUDIO CLAY" ([data-theme="claro"])
+   ========================================================================== */
+[data-theme="claro"] {
+  color-scheme: light;
+
+  --fundo: #F4F1EA;
+  --superficie: #FBF9F4;
+  --superficie-2: #EAE5DA;
+  --tinta: #151515;
+  --tinta-2: #4A4741;
+  --tinta-3: #666158;
+  --linha: #DDD6C8;
+  --linha-forte: #BDB4A4;
+
+  --fundo-rgb: 244, 241, 234;
+  --superficie-rgb: 251, 249, 244;
+  --superficie-2-rgb: 234, 229, 218;
+  --tinta-rgb: 21, 21, 21;
+  --erro-rgb: 192, 57, 43;
+  --energia-fg-rgb: 255, 248, 240;
+
+  --terracota: #E2573B;
+  --terracota-grad-topo: #EA6246;
+  --terracota-texto: #B93F27;
+  --terracota-profundo: #B93F27;
+  --terracota-suave: #F6D9CF;
+  --salvia: #8FA68A;
+  --salvia-texto: #496346;
+  --salvia-suave: #DCE6D6;
+  --areia: #D9B98A;
+  --areia-suave: rgba(217, 185, 138, 0.35);
+
+  --sucesso: #3A7246;
+  --sucesso-suave: #DFEFE2;
+  --alerta: #946210;
+  --alerta-suave: #F9EDD2;
+  --erro: #C0392B;
+  --erro-suave: #F7DDD9;
+
+  --vidro: rgba(251, 249, 244, 0.78);
+  --vidro-bg: rgba(251, 249, 244, 0.78);
+  --vidro-borda: rgba(21, 21, 21, 0.08);
+  --vidro-sombra-interna: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  --vidro-blur: blur(18px) saturate(1.2);
+
+  --btn-primario-bg: #E2573B;
+  --btn-primario-shadow: 0 1px 0 rgba(21, 21, 21, 0.04), 0 8px 24px -8px rgba(21, 21, 21, 0.12);
+  --btn-intro-continue-shadow: 0 0 0 1px rgba(226, 87, 59, 0.5), 0 10px 30px -8px rgba(226, 87, 59, 0.55);
+  --btn-primario-shadow-pressed: none;
+
+  --sombra-cor: rgba(21, 21, 21, 0.12);
+  --backdrop-scrim: rgba(21, 21, 21, 0.48);
+  --shadow-suave: 0 1px 0 rgba(21, 21, 21, 0.04), 0 8px 24px -8px rgba(21, 21, 21, 0.12);
+  --shadow-elevada: 0 20px 48px -16px rgba(21, 21, 21, 0.22);
+  --sombra-1: var(--shadow-suave);
+  --sombra-2: var(--shadow-elevada);
+  --shadow-press: inset 0 3px 8px rgba(21, 21, 21, 0.28);
+  --shadow-fab: 0 12px 28px -6px rgba(226, 87, 59, 0.48), 0 2px 6px rgba(21, 21, 21, 0.12);
+  --card-luz-argila: radial-gradient(120% 80% at 18% 0%, rgba(255, 255, 255, 0.55), transparent 60%);
+  --hoje-cena-glow: radial-gradient(68% 68% at 50% 50%, rgba(226, 87, 59, 0.08) 0%, transparent 74%);
+  --ambient-top-gradient: linear-gradient(180deg, #FBF9F4 0%, rgba(251, 249, 244, 0) 100%);
+  --grain-opacity: 0.035;
+  --focus-ring-color: var(--terracota);
+  --focus-ring-offset: 2px;
+
+  --ill-palco: radial-gradient(95% 95% at 78% 16%, rgba(226, 87, 59, 0.10) 0%, #F4EFE6 75%);
+  --ill-palco-cor: #F4EFE6;
+  --ill-contorno: #151515;
+  --ill-traco: #151515;
+  --ill-tinta: #151515;
+  --ill-argila: #E2573B;
+  --ill-terracota: #E2573B;
+  --ill-argila-profunda: #B93F27;
+  --ill-salvia: #8FA68A;
+  --ill-areia: #D9B98A;
+  --ill-creme: #FBF9F4;
+  --ill-sombra: #DDD4C6;
+  --ill-neutro: #EAE5DA;
+  --ill-corpo-base: #DDD4C6;
+  --ill-corpo-contorno: #9E9485;
+  --ill-corpo-linha: #B8AEA0;
+  --placa-text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.85), 0 1px 0 rgba(21, 21, 21, 0.25);
+  --rota-grade: rgba(21, 21, 21, 0.05);
+  --rota-curva: rgba(143, 166, 138, 0.24);
+
+  --grupo-ombros-bg: #F0E4D4;
+  --grupo-bracos-bg: #E9D5CC;
+  --grupo-core-bg: #E4EBDD;
+
+  --calor-0: #EAE5DA;
+  --calor-1: #DCE6D6;
+  --calor-2: #8FA68A;
+  --calor-3: #D9B98A;
+  --calor-4: #E2573B;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --scale-factor: 1.15;
+  }
+}
+
+[data-mode="energia"],
+.modo-energia {
+  --energia-fg-rgb: 255, 248, 240;
+  --bg-app: var(--energia-bg);
+  --bg-card: #C9462B;
+  --bg-card-alt: var(--energia-chip);
+  --text-primary: var(--energia-fg);
+  --text-secondary: rgba(255, 248, 240, 0.86);
+  --text-muted: rgba(255, 248, 240, 0.64);
+  --border-color: rgba(255, 248, 240, 0.22);
+  --accent-primary: var(--energia-fg);
+  --accent-hover: #F4F1EA;
+  --accent-soft: rgba(255, 248, 240, 0.18);
+  --on-accent: #151515;
+
+  --dur-touch: 80ms;
+  --dur-state: 150ms;
+  --dur-screen: 260ms;
+  --dur-stagger: 380ms;
+  --stagger-step: 40ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme="escuro"],
+  [data-theme="claro"],
+  [data-mode="energia"],
+  .modo-energia {
+    --dur-touch: 1ms;
+    --dur-state: 1ms;
+    --dur-screen: 1ms;
+    --dur-stagger: 1ms;
+    --stagger-step: 0ms;
+  }
+}

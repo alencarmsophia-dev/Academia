@@ -1,0 +1,62 @@
+{
+  "name": "Clay Fit — Treino Pessoal, Academia e Corrida",
+  "short_name": "Clay Fit",
+  "description": "Seu estúdio tátil de musculação, treino pessoal e corrida. Toque, deslize e evolua no seu ritmo.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./index.html#/hoje",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0E0D0C",
+  "theme_color": "#0E0D0C",
+  "categories": ["fitness", "health", "sports", "lifestyle"],
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/icons/icon-512.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Começar Treino Agora",
+      "short_name": "Começar",
+      "description": "Abre diretamente o Modo Energia para treino ou corrida",
+      "url": "./index.html#/comecar",
+      "icons": [{ "src": "./assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Check-in de Hoje",
+      "short_name": "Hoje",
+      "description": "Calibre sua energia do dia em 5 segundos",
+      "url": "./index.html#/hoje",
+      "icons": [{ "src": "./assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

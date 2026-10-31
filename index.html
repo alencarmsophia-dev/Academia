@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="escuro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E0D0C" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Clay Fit" />
+  <meta name="description" content="Clay Fit — Treino que se adapta a você." />
+
+  <title>Clay Fit — Treino que se adapta a você</title>
+
+  <!-- A1: Script mínimo sem flash antes da primeira pintura -->
+  <script>
+    (function () {
+      var resolved = 'escuro';
+      var pref = 'escuro';
+      try {
+        var raw = window.localStorage.getItem('clay_fit_store_v5');
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          var saved = parsed && parsed.perfil && parsed.perfil.tema;
+          if (saved === 'claro' || saved === 'escuro' || saved === 'automatico') {
+            pref = saved;
+          }
+        }
+        if (pref === 'automatico') {
+          var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          resolved = isDark ? 'escuro' : 'claro';
+        } else {
+          resolved = pref;
+        }
+      } catch (e) {
+        resolved = 'escuro';
+      }
+      var root = document.documentElement;
+      root.setAttribute('data-theme', resolved);
+      root.setAttribute('data-theme-pref', pref);
+      root.style.colorScheme = resolved === 'escuro' ? 'dark' : 'light';
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.setAttribute('content', resolved === 'escuro' ? '\x230E0D0C' : '\x23F4F1EA');
+      }
+    })();
+  </script>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/icon-192.svg" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+
+  <!-- Tipografia Studio Clay: Fraunces / Instrument Serif + DM Sans / Plus Jakarta Sans (font-display: swap, não bloqueante offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,500..700,30..50,0&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+
+  <!-- Folhas de Estilo Studio Clay + Modo Energia + Corrida GPS -->
+  <link rel="stylesheet" href="./css/tokens.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/motion.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/screens.css" />
+  <link rel="stylesheet" href="./css/live.css" />
+  <link rel="stylesheet" href="./css/run.css" />
+</head>
+<body>
+  <!-- Faixa Offline no Topo (36px) -->
+  <div class="c-offline-banner" role="status" aria-live="polite">
+    Sem internet. O Clay Fit continua funcionando.
+  </div>
+
+  <!-- Shell Principal do Aplicativo -->
+  <div class="app-layout">
+    <div id="app-nav-root"></div>
+    <main id="app-main-root" class="app-main" role="main"></main>
+  </div>
+
+  <!-- Raiz da Folha Inferior Arrastável (Bottom Sheet) -->
+  <div id="app-sheet-root"></div>
+
+  <!-- Entrada ES Module -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

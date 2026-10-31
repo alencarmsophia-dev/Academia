@@ -1,0 +1,1823 @@
+/**
+ * ============================================================================
+ * CLAY FIT — ESTILOS DO MÓDULO DE CORRIDA AO VIVO (GPS) E CENAS PARTE E (v0.5.0)
+ * /css/run.css
+ *
+ * Especificação Prompt 4 (Parte C e Parte E) + Prompt 5 (A2, A3, A4):
+ * - Zero cores hex fixas (100% var(--corrida-*) e var(--token)).
+ * - Telas de esforço da corrida (Pré-corrida, Buscando GPS, GPS Negado,
+ *   Contagem, Correndo, Pausada) usam tokens próprios --corrida-bg e
+ *   --corrida-superficie nos DOIS temas.
+ * - O Resumo da Corrida e a Celebração acompanham o tema ativo (escuro/claro).
+ * ============================================================================
+ */
+
+/* ----------------------------------------------------------------------------
+ * 1. ESTRUTURA GERAL DAS TELAS DE CORRIDA EM ESFORÇO (100dvh)
+ * ---------------------------------------------------------------------------- */
+
+.run-pre-screen,
+.run-searching-screen,
+.run-denied-screen,
+.run-countdown-screen,
+.run-active-screen,
+.run-paused-screen {
+  width: 100%;
+  max-width: 540px;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 auto;
+  padding: max(10px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--corrida-bg);
+  color: var(--corrida-fg);
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+}
+
+.run-pre-topbar,
+.run-active-topbar {
+  height: 48px;
+  min-height: 44px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.run-icon-btn,
+.run-top-icon-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.14);
+  background: var(--corrida-superficie);
+  color: var(--corrida-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.run-top-icon-btn.is-locked {
+  background: var(--terracota);
+  border-color: var(--corrida-fg);
+  color: var(--corrida-fg);
+}
+
+.run-pre-title {
+  margin: 0;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--corrida-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Selo de status do GPS na Pré-corrida */
+.run-gps-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.12);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--corrida-fg-2);
+  white-space: nowrap;
+}
+
+.run-gps-pill.is-ready {
+  color: var(--corrida-fg);
+  border-color: rgba(var(--salvia-rgb), 0.45);
+}
+
+.run-gps-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--corrida-amber);
+}
+
+.run-gps-dot.is-searching {
+  animation: runPulseDot 1.4s ease-in-out infinite;
+}
+
+.run-gps-dot.is-ready {
+  background: var(--salvia);
+}
+
+.run-gps-dot.is-error {
+  background: var(--terracota);
+}
+
+/* ----------------------------------------------------------------------------
+ * 2. C3.1 — TELA PRÉ-CORRIDA
+ * ---------------------------------------------------------------------------- */
+
+.run-pre-visual-zone {
+  flex: 1 1 auto;
+  min-height: 96px;
+  max-height: 34dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.run-pre-scene-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.run-pre-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+/* Seletor de 4 pílulas de modo (44px) */
+.run-mode-pills {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background: var(--corrida-superficie);
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.1);
+}
+
+.run-mode-pill {
+  height: 38px;
+  min-height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--corrida-fg-2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+.run-mode-pill.is-active {
+  background: var(--terracota);
+  color: var(--corrida-fg);
+}
+
+/* Cartão de configuração do modo escolhido */
+.run-pre-config-slot {
+  flex: 0 0 auto;
+}
+
+.run-pre-config-card {
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.1);
+  border-radius: 20px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.run-pre-config-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--corrida-fg-2);
+}
+
+.run-pre-config-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--corrida-fg-3);
+  text-align: center;
+}
+
+.run-pre-inline-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.12);
+  background: rgba(var(--creme-fixo-rgb), 0.04);
+  color: var(--corrida-fg);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.run-pre-inline-toggle.is-on .run-pre-toggle-state {
+  color: var(--salvia);
+}
+
+.run-pre-subtabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.run-pre-subtab {
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.12);
+  background: transparent;
+  color: var(--corrida-fg-2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.run-pre-subtab.is-active {
+  background: rgba(var(--terracota-rgb), 0.2);
+  border-color: var(--terracota);
+  color: var(--corrida-fg);
+}
+
+.run-pre-Quick-chips,
+.run-pre-interval-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.run-pre-chip {
+  height: 34px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.14);
+  background: rgba(var(--creme-fixo-rgb), 0.04);
+  color: var(--corrida-fg-2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.run-pre-chip.is-active {
+  background: var(--areia);
+  border-color: var(--areia);
+  color: var(--carvao-fixo);
+}
+
+.run-pre-stepper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.run-pre-step-btn {
+  height: 38px;
+  min-width: 78px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.18);
+  background: var(--corrida-bg);
+  color: var(--corrida-fg);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.run-pre-step-val {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--corrida-fg);
+}
+
+.run-pre-iv-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.run-pre-iv-summary {
+  font-size: 12px;
+  color: var(--corrida-fg-2);
+}
+
+.run-pre-custom-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--areia);
+  background: transparent;
+  color: var(--areia);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Preferências rápidas */
+.run-pre-prefs-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.run-pref-chip {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.14);
+  background: var(--corrida-superficie);
+  color: var(--corrida-fg-2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.run-pref-chip.is-on {
+  border-color: rgba(var(--salvia-rgb), 0.5);
+  color: var(--corrida-fg);
+}
+
+/* CTA primário fixo na base (80px, 72px em <700px) */
+.run-pre-cta-bar {
+  flex: 0 0 auto;
+}
+
+.run-primary-cta-btn {
+  width: 100%;
+  height: 80px;
+  border-radius: 999px;
+  border: none;
+  background: var(--btn-primario-bg);
+  background-color: var(--terracota);
+  color: var(--corrida-fg);
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: var(--btn-primario-shadow);
+}
+
+.run-secondary-cta-btn {
+  width: 100%;
+  height: 60px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.22);
+  background: var(--corrida-superficie);
+  color: var(--corrida-fg);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.run-text-link-btn,
+.run-discard-link-btn {
+  background: transparent;
+  border: none;
+  color: var(--corrida-fg-2);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ----------------------------------------------------------------------------
+ * 3. C3.2 & C3.3 — BUSCANDO GPS E GPS NEGADO
+ * ---------------------------------------------------------------------------- */
+
+.run-searching-body,
+.run-denied-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 0 12px;
+}
+
+.run-searching-heading,
+.run-denied-heading {
+  margin: 0;
+  font-family: var(--font-serif, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(26px, 6vw, 32px);
+  font-weight: 400;
+  color: var(--corrida-fg);
+  line-height: 1.15;
+}
+
+.run-searching-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--corrida-fg-2);
+}
+
+.run-searching-actions,
+.run-denied-actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.run-searching-actions {
+  opacity: 0.92;
+}
+
+.run-denied-steps {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  max-width: 340px;
+}
+
+.run-denied-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--corrida-superficie);
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  color: var(--corrida-fg);
+}
+
+.run-step-badge {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  background: var(--terracota);
+  color: var(--corrida-fg);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----------------------------------------------------------------------------
+ * 4. C3.4 — CONTAGEM 3–2–1–JÁ!
+ * ---------------------------------------------------------------------------- */
+
+.run-countdown-screen {
+  background: var(--corrida-bg);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.run-countdown-scene {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.run-countdown-scene svg {
+  position: absolute;
+  inset: 0;
+}
+
+.run-countdown-number {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-serif, 'Instrument Serif', Georgia, serif);
+  font-size: clamp(96px, 26vw, 148px);
+  line-height: 1;
+  color: var(--corrida-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.run-countdown-number.is-go {
+  color: var(--terracota);
+  font-size: clamp(72px, 20vw, 112px);
+}
+
+.run-countdown-hint {
+  margin: 24px 0 0;
+  font-size: 13px;
+  color: var(--corrida-fg-3);
+}
+
+/* ----------------------------------------------------------------------------
+ * 5. C3.5 & C4 — CORRIDA EM ANDAMENTO
+ * ---------------------------------------------------------------------------- */
+
+.run-active-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.12);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--corrida-fg);
+}
+
+.run-gps-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--salvia);
+}
+
+.run-gps-status-dot.is-medium {
+  background: var(--corrida-amber);
+}
+
+.run-gps-status-dot.is-nogps {
+  background: var(--corrida-fg-3);
+}
+
+.run-active-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Faixa do modo (Meta, Ritmo, Intervalos, Pausa automática) */
+.run-mode-banner-slot {
+  flex: 0 0 auto;
+}
+
+.run-mode-banner {
+  border-radius: 16px;
+  padding: 8px 12px;
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.1);
+}
+
+.run-goal-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.run-goal-progress-track {
+  flex: 1 1 auto;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--corrida-bg);
+  overflow: hidden;
+}
+
+.run-goal-progress-fill {
+  height: 100%;
+  background: var(--terracota);
+  border-radius: 999px;
+  transition: width 240ms ease;
+}
+
+.run-goal-remaining {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--corrida-fg-2);
+  white-space: nowrap;
+}
+
+.run-mode-banner.is-goal-reached {
+  background: rgba(var(--salvia-rgb), 0.18);
+  border-color: var(--salvia);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.run-goal-reached-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.run-goal-btn {
+  height: 36px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.run-goal-btn.is-primary {
+  background: var(--terracota);
+  color: var(--corrida-fg);
+}
+
+.run-goal-btn.is-secondary {
+  background: var(--corrida-superficie);
+  color: var(--corrida-fg);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.2);
+}
+
+/* Faixa horizontal de Ritmo Alvo (C4.3 — 12px) */
+.run-pace-band-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--corrida-fg-3);
+  margin-bottom: 4px;
+}
+
+.run-pace-band-labels .is-active {
+  color: var(--corrida-fg);
+}
+
+.run-pace-band-labels .is-ok {
+  color: var(--salvia);
+}
+
+.run-pace-band-track {
+  position: relative;
+  height: 12px;
+  border-radius: 999px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  overflow: hidden;
+  background: var(--corrida-bg);
+}
+
+.run-pace-zone-left {
+  background: rgba(var(--corrida-amber-rgb), 0.35);
+}
+
+.run-pace-zone-center {
+  background: rgba(var(--salvia-rgb), 0.55);
+}
+
+.run-pace-zone-right {
+  background: rgba(var(--corrida-amber-rgb), 0.35);
+}
+
+.run-pace-needle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  margin-left: -3px;
+  border-radius: 999px;
+  background: var(--corrida-fg);
+  box-shadow: 0 0 6px var(--sombra-cor);
+}
+
+/* Faixa de Intervalos (C4.4) */
+.run-mode-banner.is-intervals {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-color: rgba(var(--salvia-rgb), 0.45);
+}
+
+.run-mode-banner.is-intervals.is-tiro-inverted {
+  background: var(--corrida-fg);
+  color: var(--terracota-profundo);
+  border-color: var(--terracota);
+}
+
+.run-iv-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.run-iv-banner-texts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.run-iv-phase-title {
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.run-iv-next-text {
+  font-size: 11px;
+  opacity: 0.82;
+}
+
+.run-iv-phase-timer {
+  font-size: 22px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Pílula de Pausa Automática */
+.run-autopause-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--corrida-amber);
+}
+
+.run-autopause-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background: var(--corrida-amber);
+  animation: runPulseDot 1.2s infinite;
+}
+
+.run-autopause-resume-btn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--corrida-amber);
+  background: transparent;
+  color: var(--corrida-fg);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Hero Metric (Distância ou Tempo) */
+.run-hero-zone {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.run-hero-value-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.run-hero-number {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(52px, 14vw, 76px);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--corrida-fg);
+}
+
+.run-hero-unit {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--corrida-fg-2);
+}
+
+.run-hero-subnote {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--corrida-fg-3);
+}
+
+/* Grade de 3 métricas secundárias */
+.run-secondary-metrics-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.run-sec-metric-card {
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.08);
+  border-radius: 16px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.run-sec-metric-card.is-tappable {
+  cursor: pointer;
+}
+
+.run-sec-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--corrida-fg-3);
+  white-space: nowrap;
+}
+
+.run-sec-val-row {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.run-sec-val {
+  font-size: clamp(20px, 5.2vw, 26px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--corrida-fg);
+  white-space: nowrap;
+}
+
+.run-sec-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--corrida-fg-2);
+}
+
+/* Zona do Mapa / Arte do Trajeto */
+.run-map-zone {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 112px;
+  max-height: 38dvh;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.1);
+}
+
+.route-streets-toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.22);
+  background: rgba(var(--carvao-fixo-rgb), 0.78);
+  color: var(--corrida-fg);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.route-streets-toggle-btn.is-active {
+  background: var(--salvia);
+  color: var(--carvao-fixo);
+  border-color: var(--salvia);
+}
+
+.route-osm-attribution {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  z-index: 3;
+  font-size: 10px;
+  color: rgba(var(--creme-fixo-rgb), 0.65);
+  background: rgba(var(--carvao-fixo-rgb), 0.55);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.run-last-split-chip {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 3;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(var(--carvao-fixo-rgb), 0.8);
+  border: 1px solid rgba(var(--areia-rgb), 0.35);
+  color: var(--areia);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Barra de controle inferior */
+.run-bottom-control-bar {
+  flex: 0 0 auto;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.run-pause-btn {
+  width: 100%;
+  height: 72px;
+  border-radius: 999px;
+  background: var(--corrida-superficie);
+  border: 2px solid var(--terracota);
+  color: var(--corrida-fg);
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.run-locked-pill {
+  width: 100%;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.16);
+  color: var(--corrida-fg-2);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+/* ----------------------------------------------------------------------------
+ * 6. C3.6 — CORRIDA PAUSADA
+ * ---------------------------------------------------------------------------- */
+
+.run-paused-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.run-paused-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(var(--corrida-amber-rgb), 0.18);
+  border: 1px solid var(--corrida-amber);
+  color: var(--corrida-amber);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.run-paused-elapsed {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--corrida-fg-2);
+}
+
+.run-paused-metrics-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.run-paused-metric-card {
+  background: var(--corrida-superficie);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.08);
+  border-radius: 18px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.run-paused-metric-val {
+  font-size: clamp(20px, 5vw, 24px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--corrida-fg);
+}
+
+.run-paused-route-card {
+  flex: 1 1 auto;
+  min-height: 96px;
+  max-height: 28dvh;
+  background: var(--corrida-superficie);
+  border-radius: 20px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.run-paused-route-preview {
+  flex: 1 1 auto;
+  min-height: 70px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.run-paused-splits-list {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.run-paused-split-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--corrida-bg);
+  color: var(--areia);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.run-paused-footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.run-paused-footer .run-primary-cta-btn {
+  height: 72px;
+}
+
+.run-hold-finish-btn {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border-radius: 999px;
+  background: var(--corrida-superficie);
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.22);
+  color: var(--corrida-fg);
+  font-size: 16px;
+  font-weight: 600;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.run-hold-fill-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(var(--terracota-rgb), 0.85);
+  pointer-events: none;
+}
+
+.run-hold-btn-label {
+  position: relative;
+  z-index: 1;
+}
+
+/* ----------------------------------------------------------------------------
+ * 7. C3.7 & C3.8 — RESUMO E CELEBRAÇÃO DA CORRIDA (SEGUEM O TEMA ESCURO/CLARO)
+ * ---------------------------------------------------------------------------- */
+
+.run-finish-screen,
+.run-celebrate-screen {
+  width: 100%;
+  height: 100dvh;
+  background: var(--fundo);
+  color: var(--tinta);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.run-finish-scroll {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.run-finish-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.run-finish-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--terracota-texto);
+}
+
+.run-finish-title {
+  margin: 0;
+  font-family: var(--font-serif, 'Instrument Serif', Georgia, serif);
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--tinta);
+  line-height: 1.1;
+}
+
+.run-finish-title-chips,
+.run-finish-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.run-title-chip,
+.run-finish-choice-chip {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  background: var(--superficie-2);
+  color: var(--tinta-2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.run-title-chip.is-active,
+.run-finish-choice-chip.is-active {
+  background: var(--terracota);
+  border-color: var(--terracota);
+  color: var(--creme-fixo);
+}
+
+.run-finish-route-card {
+  height: 220px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--linha);
+  box-shadow: var(--shadow-suave);
+}
+
+.run-finish-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.run-finish-metric-card {
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.run-finish-metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tinta-2);
+}
+
+.run-finish-metric-val {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--tinta);
+  white-space: nowrap;
+}
+
+.run-finish-metric-sub {
+  font-size: 11px;
+  color: var(--tinta-3);
+}
+
+.run-nogps-stepper {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.run-nogps-step-btn {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  background: var(--superficie-2);
+  color: var(--tinta);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.run-finish-card,
+.run-finish-records-box {
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 22px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.run-finish-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tinta);
+}
+
+.run-finish-records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.run-finish-record-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--superficie-2);
+  border: 1.5px solid var(--terracota);
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.run-finish-record-texts {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.run-finish-record-texts strong {
+  font-size: 14px;
+  color: var(--tinta);
+}
+
+.run-finish-record-texts span {
+  font-size: 12px;
+  color: var(--tinta-2);
+}
+
+.run-finish-record-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--terracota-texto);
+  white-space: nowrap;
+}
+
+/* Tabela de parciais por km */
+.run-splits-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.run-split-row {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+}
+
+.run-split-row.is-selected {
+  outline: 2px solid var(--terracota);
+}
+
+.run-split-km-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.run-fastest-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--terracota-texto);
+}
+
+.run-split-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--superficie);
+  overflow: hidden;
+}
+
+.run-split-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--salvia);
+}
+
+.run-split-bar-fill.is-fastest {
+  background: var(--terracota);
+}
+
+.run-split-pace-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.run-split-elev {
+  font-size: 11px;
+  color: var(--tinta-3);
+}
+
+.run-splits-insight {
+  margin: 4px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--salvia-suave);
+  color: var(--tinta);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.run-save-btn {
+  width: 100%;
+  height: 64px;
+  border-radius: 999px;
+  border: none;
+  background: var(--btn-primario-bg);
+  background-color: var(--terracota);
+  color: var(--creme-fixo);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--btn-primario-shadow);
+}
+
+/* Celebração da corrida */
+.run-celebrate-screen {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.run-confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.run-confetti-dot {
+  position: absolute;
+  top: -16px;
+  border-radius: 999px;
+  animation: runConfettiFall 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.run-celebrate-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.run-celebrate-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--salvia-suave);
+  color: var(--salvia-texto);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.run-celebrate-title {
+  margin: 0;
+  font-family: var(--font-serif, 'Instrument Serif', Georgia, serif);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--tinta);
+}
+
+.run-celebrate-subtitle {
+  margin: 0;
+  font-size: 15px;
+  color: var(--tinta-2);
+}
+
+.run-celebrate-summary-card {
+  width: 100%;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 22px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.run-celebrate-metrics {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  text-align: left;
+}
+
+.run-cel-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.run-cel-metric span {
+  font-size: 11px;
+  color: var(--tinta-2);
+}
+
+.run-cel-metric strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tinta);
+  white-space: nowrap;
+}
+
+.run-celebrate-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.run-celebrate-home-btn {
+  width: 100%;
+  height: 54px;
+  border-radius: 999px;
+  border: 1.5px solid var(--linha);
+  background: transparent;
+  color: var(--tinta);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Folha de intervalos e confirmação */
+.run-iv-sheet,
+.run-confirm-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 8px;
+}
+
+.run-iv-sheet-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--linha);
+}
+
+.run-iv-sheet-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.run-confirm-sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ----------------------------------------------------------------------------
+ * 8. ANIMAÇÕES PARTE E (PRÉ-CORRIDA, RADAR, MEDALHA, CHAMA, ROTA)
+ * ---------------------------------------------------------------------------- */
+
+.run-pre-bora-bubble {
+  opacity: 0;
+  transform: translate(184px, 24px) scale(0.85);
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+}
+
+.run-pre-scene-wrap.is-boosted .run-pre-bora-bubble {
+  opacity: 1;
+  transform: translate(184px, 14px) scale(1);
+}
+
+.run-pre-sun-halo {
+  transform-origin: 256px 40px;
+  animation: runSunHaloBreath 4s ease-in-out infinite;
+}
+
+.run-pre-runner {
+  animation: runRunnerBob 1.1s ease-in-out infinite;
+}
+
+.run-pre-scene-wrap.is-boosted .run-pre-runner {
+  animation-duration: 0.48s;
+}
+
+.run-radar-wave {
+  transform-origin: 90px 75px;
+  animation: runRadarExpand 1.8s ease-out infinite;
+}
+
+.run-radar-wave-2 {
+  animation-delay: 0.6s;
+}
+
+.run-radar-wave-3 {
+  animation-delay: 1.2s;
+}
+
+.run-denied-scene.is-wiggling .run-denied-padlock {
+  animation: runPadlockWiggle 600ms ease-in-out;
+}
+
+.route-art-pulse-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: routeArtHaloPulse 1.6s ease-out infinite;
+}
+
+.route-art-draw-path {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: routeArtStrokeDraw 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.clay-record-medal.is-muted {
+  opacity: 0.4;
+}
+
+.clay-medal-shine-bar {
+  opacity: 0;
+}
+
+.clay-record-medal.has-shine .clay-medal-shine-bar {
+  animation: clayMedalShinePass 900ms ease-out forwards;
+}
+
+.clay-flame-body {
+  transform-origin: 28px 46px;
+  animation: clayFlameSway 3s ease-in-out infinite;
+}
+
+.flame-spark {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clay-streak-flame-wrap.is-sparking .flame-spark-1 {
+  animation: flameSparkRise 850ms ease-out forwards;
+}
+
+.clay-streak-flame-wrap.is-sparking .flame-spark-2 {
+  animation: flameSparkRise 850ms ease-out 100ms forwards;
+}
+
+.clay-streak-flame-wrap.is-sparking .flame-spark-3 {
+  animation: flameSparkRise 850ms ease-out 200ms forwards;
+}
+
+.evo-empty-scene.is-popping,
+.evo-rings-figure.is-popping,
+.run-signal-scene.is-popping {
+  animation: clayTapPop 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.evo-ring-stroke {
+  transition: stroke-dashoffset 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes runPulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.55; }
+}
+
+@keyframes runSunHaloBreath {
+  0%, 100% { transform: scale(1); opacity: 0.22; }
+  50% { transform: scale(1.08); opacity: 0.34; }
+}
+
+@keyframes runRunnerBob {
+  0%, 100% { transform: translate(148px, 46px); }
+  25% { transform: translate(150px, 42px) rotate(2deg); }
+  50% { transform: translate(148px, 47px); }
+  75% { transform: translate(146px, 43px) rotate(-1.5deg); }
+}
+
+@keyframes runRadarExpand {
+  0% { transform: scale(0.3); opacity: 0.72; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes runPadlockWiggle {
+  0%, 100% { transform: translate(106px, 72px) rotate(0deg); }
+  25% { transform: translate(106px, 72px) rotate(-14deg); }
+  50% { transform: translate(106px, 72px) rotate(12deg); }
+  75% { transform: translate(106px, 72px) rotate(-6deg); }
+}
+
+@keyframes routeArtHaloPulse {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.85); opacity: 0; }
+}
+
+@keyframes routeArtStrokeDraw {
+  from { stroke-dashoffset: 1200; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes clayMedalShinePass {
+  0% { transform: translateX(0) rotate(25deg); opacity: 0; }
+  20% { opacity: 0.85; }
+  100% { transform: translateX(64px) rotate(25deg); opacity: 0; }
+}
+
+@keyframes clayFlameSway {
+  0%, 100% { transform: rotate(-2.5deg) scaleY(1); }
+  50% { transform: rotate(2.5deg) scaleY(1.05); }
+}
+
+@keyframes flameSparkRise {
+  0% { transform: translateY(8px) scale(0.8); opacity: 0.95; }
+  100% { transform: translateY(-18px) scale(0.2); opacity: 0; }
+}
+
+@keyframes clayTapPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.96); }
+  70% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes runConfettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(85dvh) rotate(260deg); opacity: 0; }
+}
+
+/* ----------------------------------------------------------------------------
+ * 9. RESPONSIVIDADE EM TELAS CURTAS (< 700px) E PAISAGEM (740×360)
+ * ---------------------------------------------------------------------------- */
+
+@media (max-height: 699px) {
+  .run-pre-visual-zone {
+    min-height: 76px;
+    max-height: 22dvh;
+  }
+
+  .run-primary-cta-btn {
+    height: 64px;
+    font-size: 16px;
+  }
+
+  .run-secondary-cta-btn {
+    height: 50px;
+    font-size: 14px;
+  }
+
+  .run-pause-btn {
+    height: 60px;
+    font-size: 16px;
+  }
+
+  .run-bottom-control-bar {
+    height: 64px;
+  }
+
+  .run-hero-number {
+    font-size: clamp(44px, 11vw, 56px);
+  }
+
+  .run-map-zone {
+    min-height: 92px;
+    max-height: 28dvh;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .run-pre-screen,
+  .run-active-screen,
+  .run-paused-screen {
+    max-width: 100%;
+    padding: 6px 16px 8px;
+    gap: 4px;
+  }
+
+  .run-pre-visual-zone {
+    min-height: 52px;
+    max-height: 68px;
+  }
+
+  .run-pre-config-card {
+    padding: 6px 10px;
+    gap: 4px;
+  }
+
+  .run-primary-cta-btn,
+  .run-paused-footer .run-primary-cta-btn {
+    height: 46px;
+    font-size: 15px;
+  }
+
+  .run-secondary-cta-btn,
+  .run-hold-finish-btn {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .run-hero-number {
+    font-size: 38px;
+  }
+
+  .run-sec-metric-card {
+    padding: 4px 8px;
+  }
+
+  .run-sec-val {
+    font-size: 18px;
+  }
+
+  .run-map-zone {
+    min-height: 64px;
+    max-height: 96px;
+  }
+
+  .run-bottom-control-bar {
+    height: 48px;
+  }
+
+  .run-pause-btn {
+    height: 44px;
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .run-pre-sun-halo,
+  .run-pre-runner,
+  .run-radar-wave,
+  .route-art-pulse-halo,
+  .route-art-draw-path,
+  .clay-flame-body,
+  .run-gps-dot.is-searching,
+  .run-autopause-dot {
+    animation: none !important;
+  }
+}

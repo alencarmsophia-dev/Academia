@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" width="240" height="64" fill="none">
+  <g transform="translate(4, 4)">
+    <rect width="56" height="56" rx="16" fill="#EAE5DA"/>
+    <path d="M16 42 C15 27, 20 15, 28 15 C36 15, 41 27, 40 42 C40 44.5, 37 45.5, 35 44 C33 43, 33 40, 32.5 37 C32 29, 30.5 23.5, 28 23.5 C25.5 23.5, 24 29, 23.5 37 C23 40, 23 43, 21 44 C19 45.5, 16 44.5, 16 42 Z" fill="#E2573B"/>
+    <circle cx="28" cy="10" r="3.5" fill="#B93F27"/>
+    <path d="M20 45 Q28 42 36 45" stroke="#151515" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="74" y="39" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="28" letter-spacing="-0.02em" fill="#151515">Clay Fit</text>
+  <circle cx="192" cy="34" r="4" fill="#E2573B"/>
+</svg>

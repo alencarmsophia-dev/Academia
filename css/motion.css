@@ -1,0 +1,767 @@
+/* ==========================================================================
+   CLAY FIT — SISTEMA DE MOVIMENTO, TRANSIÇÕES E ANIMAÇÕES
+   /css/motion.css
+   Curvas, durações, classes de transição (push, pop, replace, abas, folha),
+   esqueleto com brilho deslizante, estados de pressionado, loops das 8 cenas
+   da Biblioteca (5s a 9s) e prefers-reduced-motion.
+   Regra de ouro: animar somente transform e opacity.
+   ========================================================================== */
+
+:root {
+  /* 3.1 Curvas */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* 3.2 Durações */
+  --dur-touch: 120ms;
+  --dur-state: 220ms;
+  --dur-enter: 360ms;
+  --dur-exit: 240ms;
+  --dur-hero: 600ms;
+  --stagger-step: 60ms;
+}
+
+/* --------------------------------------------------------------------------
+   ESTADOS DE PRESSIONADO E SOLTURA COM OVERSHOOT (scale .97 -> 1.015 -> 1)
+   -------------------------------------------------------------------------- */
+.is-pressed {
+  transform: scale(0.97) !important;
+  transition: transform var(--dur-touch) var(--ease-out) !important;
+}
+
+@keyframes clayReleaseOvershoot {
+  0% {
+    transform: scale(0.97);
+  }
+  60% {
+    transform: scale(1.015);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.is-releasing {
+  animation: clayReleaseOvershoot var(--dur-state) var(--ease-out) forwards;
+}
+
+@keyframes clayChoiceSquish {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.98);
+  }
+  75% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.is-squishing {
+  animation: clayChoiceSquish var(--dur-enter) var(--ease-out) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   CLASSES DE TRANSIÇÃO DE NAVEGAÇÃO (Abas, Push, Pop, Replace, Folha, Stagger)
+   -------------------------------------------------------------------------- */
+@keyframes clayTabEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clayPushEnter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes clayPushRecede {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0.88;
+    transform: translateX(-20%);
+  }
+}
+
+@keyframes clayPopEnter {
+  from {
+    opacity: 0.88;
+    transform: translateX(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes clayPopExit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes clayReplaceFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes claySheetEnter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes claySheetExit {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.nav-transition-tab {
+  animation: clayTabEnter var(--dur-state) var(--ease-out) forwards;
+}
+
+.nav-transition-push {
+  animation: clayPushEnter var(--dur-enter) var(--ease-out) forwards;
+}
+
+.nav-transition-pop {
+  animation: clayPopEnter var(--dur-exit) var(--ease-in) forwards;
+}
+
+.nav-transition-replace {
+  animation: clayReplaceFade var(--dur-state) var(--ease-out) forwards;
+}
+
+.sheet-transition-enter {
+  animation: claySheetEnter var(--dur-enter) var(--ease-out) forwards;
+}
+
+.sheet-transition-exit {
+  animation: claySheetExit var(--dur-exit) var(--ease-in) forwards;
+}
+
+@keyframes clayStepExitLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+
+@keyframes clayStepEnterRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.q-step-exit {
+  animation: clayStepExitLeft var(--dur-exit) var(--ease-in) forwards;
+}
+
+.q-step-enter {
+  animation: clayStepEnterRight var(--dur-enter) var(--ease-out) forwards;
+}
+
+@keyframes clayStaggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  opacity: 0;
+  animation: clayStaggerIn var(--dur-enter) var(--ease-out) forwards;
+  animation-delay: calc(min(var(--stagger-index, 0), 5) * var(--stagger-step));
+}
+
+@keyframes clayHeroRise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  animation: clayHeroRise var(--dur-hero) var(--ease-out) forwards;
+}
+
+.hero-treino-shared {
+  view-transition-name: hero-treino;
+}
+
+/* Cross-fade de 480ms quando o check-in troca a Cena J do treino de hoje */
+@keyframes claySceneJFade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scene-j-crossfade {
+  animation: claySceneJFade 480ms var(--ease-out) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   ESQUELETO COM BRILHO DESLIZANTE (gradiente de 120% de largura, 1,4s, transform)
+   -------------------------------------------------------------------------- */
+@keyframes clayShimmerSlide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.c-skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--superficie-2);
+  border-radius: 14px;
+}
+
+.c-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -10%;
+  width: 120%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--superficie-rgb), 0.72) 50%,
+    transparent 100%
+  );
+  animation: clayShimmerSlide 1.4s var(--ease-in-out) infinite;
+}
+
+/* --------------------------------------------------------------------------
+   2.3 CENA B (PASSO 1): 4 peças flutuam ±3px em loops de 5s defasados em 400ms
+   -------------------------------------------------------------------------- */
+@keyframes sceneBFloat3px {
+  0%, 100% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+.scene-b-float {
+  animation: sceneBFloat3px 5s var(--ease-in-out) infinite;
+}
+.scene-b-float--0 {
+  animation-delay: 0ms;
+}
+.scene-b-float--1 {
+  animation-delay: 400ms;
+}
+.scene-b-float--2 {
+  animation-delay: 800ms;
+}
+.scene-b-float--3 {
+  animation-delay: 1200ms;
+}
+
+/* --------------------------------------------------------------------------
+   3.1 LOOPS DE 5 A 9s DAS 8 CENAS DE GRUPO DA BIBLIOTECA
+   -------------------------------------------------------------------------- */
+
+/* Peito: peitoral sálvia respira (scale 1 -> 1.04, 6s), barra sobe/desce 5px (6s) */
+@keyframes libPeitoBreath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes libPeitoBar5px {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.lib-anim-peito-breath {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: libPeitoBreath 6s var(--ease-in-out) infinite;
+}
+
+.lib-anim-peito-bar {
+  animation: libPeitoBar5px 6s var(--ease-in-out) infinite;
+}
+
+/* Costas: cabo desce 8px e volta (7s) */
+@keyframes libCostasCable8px {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.lib-anim-costas-cable {
+  animation: libCostasCable8px 7s var(--ease-in-out) infinite;
+}
+
+/* Ombros: halteres flutuam ±4px em oposição (6s) */
+@keyframes libOmbrosLeft {
+  0%, 100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes libOmbrosRight {
+  0%, 100% {
+    transform: translateY(4px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.lib-anim-ombros-left {
+  animation: libOmbrosLeft 6s var(--ease-in-out) infinite;
+}
+
+.lib-anim-ombros-right {
+  animation: libOmbrosRight 6s var(--ease-in-out) infinite;
+}
+
+/* Braços: antebraço de argila terracota gira 12° (6s) */
+@keyframes libBracosCurl12deg {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-12deg);
+  }
+}
+
+.lib-anim-bracos-curl {
+  animation: libBracosCurl12deg 6s var(--ease-in-out) infinite;
+}
+
+/* Pernas: silhueta desce 6px e sobe (7s) */
+@keyframes libPernasSquat6px {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.lib-anim-pernas-squat {
+  animation: libPernasSquat6px 7s var(--ease-in-out) infinite;
+}
+
+/* Core: ondas concêntricas terracota saindo do centro do abdômen (8s) */
+@keyframes libCoreWave {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+}
+
+.lib-anim-core-wave-1 {
+  transform-origin: 80px 58px;
+  animation: libCoreWave 8s var(--ease-out) infinite;
+}
+
+.lib-anim-core-wave-2 {
+  transform-origin: 80px 58px;
+  animation: libCoreWave 8s var(--ease-out) 4s infinite;
+}
+
+/* Corrida: riscos deslizam e somem (5s) */
+@keyframes libCorridaStreaks {
+  0% {
+    transform: translateX(8px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(-18px);
+    opacity: 0;
+  }
+}
+
+.lib-anim-corrida-streaks {
+  animation: libCorridaStreaks 5s var(--ease-out) infinite;
+}
+
+/* Mobilidade: arco do braço oscila 5° (9s) */
+@keyframes libMobSway5deg {
+  0%, 100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+.lib-anim-mob-sway {
+  animation: libMobSway5deg 9s var(--ease-in-out) infinite;
+}
+
+/* --------------------------------------------------------------------------
+   PULSOS E LOOPS GERAIS
+   -------------------------------------------------------------------------- */
+@keyframes clayOutlinePulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.recalc-pulse-ring {
+  position: relative;
+}
+
+.recalc-pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2.5px solid var(--terracota);
+  pointer-events: none;
+  animation: clayOutlinePulse 680ms var(--ease-out) forwards;
+}
+
+@keyframes clayTodayBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.32);
+    opacity: 0.65;
+  }
+}
+
+.today-dot-pulse {
+  animation: clayTodayBreath 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes clayBlobDrift {
+  0% {
+    transform: translate(-16px, -12px) scale(1);
+  }
+  100% {
+    transform: translate(16px, 14px) scale(1.05);
+  }
+}
+
+.q-ambient-blob {
+  animation: clayBlobDrift 12s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes clayFloat5s {
+  0%, 100% {
+    transform: translateY(-6px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(6px) rotate(2deg);
+  }
+}
+
+@keyframes clayFloat65s {
+  0%, 100% {
+    transform: translateY(5px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-1.5deg);
+  }
+}
+
+@keyframes clayShadowBreath5s {
+  0%, 100% {
+    transform: scaleX(0.92);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scaleX(1.04);
+    opacity: 0.82;
+  }
+}
+
+@keyframes clayBallIdleBounce {
+  0%, 82%, 100% {
+    transform: translateY(0);
+  }
+  90% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes clayJointWave {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes clayBenchLoop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes clayPullLoop {
+  0%, 100% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+@keyframes claySquatLoop {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(10px) scaleY(0.94);
+  }
+}
+
+@keyframes clayRunnerLoop {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(48px, -16px);
+  }
+  50% {
+    transform: translate(98px, -6px);
+  }
+  75% {
+    transform: translate(146px, -28px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes clayZzzRise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.85);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scale(1.1);
+  }
+}
+
+.ill-float-dumbbell {
+  animation: clayFloat5s 5s var(--ease-in-out) infinite;
+}
+.ill-float-shoe {
+  animation: clayFloat65s 6.5s var(--ease-in-out) infinite;
+}
+.ill-shadow-breath {
+  transform-origin: center;
+  animation: clayShadowBreath5s 5s var(--ease-in-out) infinite;
+}
+.ill-ball-idle {
+  animation: clayBallIdleBounce 3s var(--ease-in-out) infinite;
+}
+.ill-joint-pulse {
+  transform-origin: center;
+  animation: clayJointWave 2s var(--ease-in-out) infinite;
+}
+.ill-bench-bar {
+  animation: clayBenchLoop 3s var(--ease-in-out) infinite;
+}
+.ill-pull-bar {
+  animation: clayPullLoop 3.2s var(--ease-in-out) infinite;
+}
+.ill-squat-arc {
+  transform-origin: center bottom;
+  animation: claySquatLoop 4s var(--ease-in-out) infinite;
+}
+.ill-runner-dot {
+  animation: clayRunnerLoop 6s var(--ease-in-out) infinite;
+}
+.ill-zzz-1 {
+  animation: clayZzzRise 5s var(--ease-out) infinite;
+}
+.ill-zzz-2 {
+  animation: clayZzzRise 5s var(--ease-out) 1.6s infinite;
+}
+.ill-zzz-3 {
+  animation: clayZzzRise 5s var(--ease-out) 3.2s infinite;
+}
+
+.edge-swipe-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2000;
+  opacity: 0;
+  background: linear-gradient(90deg, rgba(var(--tinta-rgb), 0.18) 0%, transparent 24%);
+  transition: opacity 120ms linear;
+}
+
+body.is-document-hidden *,
+.is-offscreen * {
+  animation-play-state: paused !important;
+}
+
+/* --------------------------------------------------------------------------
+   3.9 PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 120ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .ill-float-dumbbell,
+  .ill-float-shoe,
+  .ill-shadow-breath,
+  .ill-ball-idle,
+  .ill-joint-pulse,
+  .ill-bench-bar,
+  .ill-pull-bar,
+  .ill-squat-arc,
+  .ill-runner-dot,
+  .ill-zzz-1,
+  .ill-zzz-2,
+  .ill-zzz-3,
+  .scene-b-float,
+  .lib-anim-peito-breath,
+  .lib-anim-peito-bar,
+  .lib-anim-costas-cable,
+  .lib-anim-ombros-left,
+  .lib-anim-ombros-right,
+  .lib-anim-bracos-curl,
+  .lib-anim-pernas-squat,
+  .lib-anim-core-wave-1,
+  .lib-anim-core-wave-2,
+  .lib-anim-corrida-streaks,
+  .lib-anim-mob-sway,
+  .q-ambient-blob,
+  .today-dot-pulse,
+  .c-skeleton::after {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .is-pressed,
+  .is-releasing,
+  .is-squishing {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .stagger-item,
+  .hero-enter,
+  .nav-transition-tab,
+  .nav-transition-push,
+  .nav-transition-pop,
+  .nav-transition-replace {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: clayReplaceFade 120ms linear forwards !important;
+  }
+}

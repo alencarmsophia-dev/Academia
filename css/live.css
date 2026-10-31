@@ -1,0 +1,1612 @@
+/* ==========================================================================
+   CLAY FIT — ESTILOS COMPLETOS DO TREINO AO VIVO (MODO ENERGIA — v0.5.0)
+   /css/live.css
+   Especificações Prompt 4 (A1, A2) + Prompt 5 (A2, A3, A4):
+   - Zero cores hex fixas (100% var(--energia-*) e var(--token)).
+   - As telas ativas do treino ao vivo usam os tokens fixos do Modo Energia
+     (--energia-bg, --energia-fg, --energia-chip, --energia-chip-2).
+   - O resumo pós-treino e a celebração acompanham o tema ativo (escuro/claro).
+   ========================================================================== */
+
+:root {
+  --live-toast-top: calc(env(safe-area-inset-top, 0px) + 70px);
+}
+
+.live-screen {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 0 20px calc(16px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--energia-bg);
+  color: var(--energia-fg);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (min-width: 768px) {
+  .live-screen {
+    max-width: 480px;
+    border-inline: 1px solid rgba(var(--creme-fixo-rgb), 0.22);
+    box-shadow: 0 24px 64px rgba(var(--carvao-fixo-rgb), 0.35);
+  }
+}
+
+.live-fullscreen-shader {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Barra superior (56px + safe-area) */
+.live-topbar {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  min-height: calc(56px + var(--safe-top));
+  padding-top: var(--safe-top);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.live-icon-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.36);
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 100ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.live-icon-btn:focus-visible {
+  outline: 3px solid var(--energia-fg);
+  outline-offset: 3px;
+}
+
+/* Pílula de contraste AA (--energia-fg sobre --energia-chip) */
+.live-aa-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.26);
+}
+
+.live-aa-pill--caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-aa-pill--tiny {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  padding: 3px 10px;
+}
+
+/* --------------------------------------------------------------------------
+   B6 — TELA PRÉ-TREINO
+   -------------------------------------------------------------------------- */
+.live-pre-center {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.live-pre-countdown-num {
+  font-family: var(--font-display);
+  font-size: 96px;
+  line-height: 96px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--energia-fg);
+  animation: liveCountdownPop 300ms var(--ease-out) both;
+}
+
+.live-pre-countdown-num.is-popping {
+  animation: liveCountdownPop 300ms var(--ease-out) both;
+}
+
+@keyframes liveCountdownPop {
+  0% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.live-pre-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+  color: var(--energia-fg);
+  text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   B7 — AQUECIMENTO E ALONGAMENTO
+   -------------------------------------------------------------------------- */
+.live-warmup-stage {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+  transition: transform 240ms var(--ease-out), opacity 240ms var(--ease-out);
+}
+
+.live-warmup-stage.is-sliding-out {
+  transform: translateX(-28px);
+  opacity: 0;
+}
+
+.live-warmup-scene-zone {
+  width: 100%;
+  height: clamp(120px, 28dvh, 240px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-warmup-scene-zone svg {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
+.live-h1-warmup {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4.2dvh, 32px);
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--energia-fg);
+  text-wrap: balance;
+}
+
+.live-warmup-inst {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  max-width: 340px;
+}
+
+.live-warmup-ring-btn {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--energia-fg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.live-warmup-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.live-warmup-seconds {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 56px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--energia-fg);
+}
+
+.live-warmup-footer {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.live-ghost-btn {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.45);
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   A1, B8, M1, M2, M4 — TELA DE EXERCÍCIO
+   -------------------------------------------------------------------------- */
+.live-ex-progress-row {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+
+.live-ex-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background-color: rgba(var(--creme-fixo-rgb), 0.25);
+  overflow: hidden;
+}
+
+.live-ex-seg__fill {
+  height: 100%;
+  background-color: var(--energia-fg);
+  transition: width 240ms var(--ease-out);
+}
+
+.live-exercise-body {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.live-exercise-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.live-exercise-right-col {
+  flex: 0 0 auto;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.live-demo-zone {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 120px;
+  max-height: 58dvh;
+  border-radius: 24px;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.28);
+  background-color: rgba(var(--terracota-profundo-rgb), 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 6px 12px;
+  transition: min-height 200ms var(--ease-out), max-height 200ms var(--ease-out);
+}
+
+.live-demo-zone svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.live-screen--exercise.has-effort-open .live-demo-zone {
+  min-height: 64px;
+  max-height: 18dvh;
+}
+
+.live-demo-zone__badge {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.live-exercise-header-text {
+  text-align: left;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.live-h1-exercise {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 5.2vw, 30px);
+  line-height: 1.12;
+  font-weight: 600;
+  color: var(--energia-fg);
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.live-exercise-submeta {
+  margin-top: 0;
+}
+
+.live-series-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.live-series-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-serie-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-serie-dot--done {
+  background-color: var(--energia-fg);
+  color: var(--energia-chip);
+  animation: clayCheckPop360 240ms var(--ease-out) both;
+}
+
+.live-serie-dot--current {
+  border: 2.5px solid var(--energia-fg);
+  background-color: transparent;
+  animation: liveSerieDotPulse 1.6s ease-in-out infinite;
+}
+
+.live-serie-dot--future {
+  border: 2px solid rgba(var(--creme-fixo-rgb), 0.4);
+  background-color: transparent;
+}
+
+@keyframes liveSerieDotPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+.live-metrics-swipe-wrap {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.live-metrics-skip-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background-color: var(--carvao-fixo);
+  color: var(--energia-fg);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 28px;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 0;
+}
+
+.live-metrics-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background-color: var(--energia-bg);
+  transition: transform 180ms var(--ease-out);
+}
+
+.live-metric-card {
+  min-height: 118px;
+  height: auto;
+  border-radius: 24px;
+  background-color: var(--energia-chip);
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.36);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.live-metric-card:focus-visible {
+  outline: 3px solid var(--energia-fg);
+  outline-offset: 2px;
+}
+
+.live-metric-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.live-metric-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.live-metric-number {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 40px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--energia-fg);
+}
+
+.live-metric-unit {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--energia-fg);
+}
+
+.live-bodyweight-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--energia-fg);
+  text-align: center;
+}
+
+.live-vest-toggle-btn {
+  min-height: 48px;
+  cursor: pointer;
+}
+
+.live-stepper-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+}
+
+.live-circle-step-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--energia-fg);
+  color: var(--energia-chip);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px var(--energia-chip-2);
+  transition: transform 100ms var(--ease-out);
+}
+
+.live-circle-step-btn:active {
+  transform: scale(0.94);
+}
+
+.live-timed-start-pill {
+  min-height: 48px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--energia-fg);
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.live-support-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.live-support-chip,
+button.live-support-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.28);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: normal;
+  text-wrap: balance;
+  text-align: left;
+}
+
+button.live-support-chip {
+  cursor: pointer;
+}
+
+.live-support-chip--compact-single {
+  display: none !important;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-giant-footer {
+  position: relative;
+  z-index: 4;
+  flex: 0 0 auto;
+  width: 100%;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.live-giant-btn {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 88px;
+  border-radius: 28px;
+  border: none;
+  background-color: var(--energia-fg);
+  color: var(--energia-chip);
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 32px rgba(var(--carvao-fixo-rgb), 0.24);
+  transition:
+    transform 100ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    opacity 160ms var(--ease-out);
+}
+
+.live-giant-btn:active,
+.live-giant-btn.is-pressed {
+  transform: scale(0.97);
+  box-shadow: inset 0 3px 8px var(--energia-chip-2);
+}
+
+.live-giant-btn:disabled {
+  opacity: 0.85;
+  cursor: default;
+}
+
+.live-giant-btn:focus-visible {
+  outline: 3px solid var(--energia-fg);
+  outline-offset: 3px;
+}
+
+.live-giant-btn--secondary {
+  height: 64px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  border: 2px solid var(--energia-fg);
+}
+
+.live-giant-btn__ripple {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  margin-top: -12px;
+  border-radius: 50%;
+  background-color: rgba(var(--terracota-profundo-rgb), 0.2);
+  pointer-events: none;
+  animation: liveGiantRipple 600ms var(--ease-out) forwards;
+}
+
+@keyframes liveGiantRipple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(28);
+    opacity: 0;
+  }
+}
+
+.live-effort-bar {
+  width: 100%;
+  height: 88px;
+  border-radius: 24px;
+  background-color: var(--energia-chip);
+  border: 2px solid var(--energia-fg);
+  padding: 8px 12px 6px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 28px rgba(var(--carvao-fixo-rgb), 0.28);
+  animation: liveEffortRise 240ms var(--ease-out) both;
+}
+
+.live-effort-bar[hidden] {
+  display: none !important;
+}
+
+@keyframes liveEffortRise {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.live-effort-bar__label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--energia-fg);
+  text-align: center;
+}
+
+.live-effort-chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.live-effort-chip {
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.45);
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-effort-chip.is-selected {
+  background-color: var(--energia-fg);
+  color: var(--energia-chip);
+  border-color: var(--energia-fg);
+}
+
+.live-effort-bar__progress {
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background-color: rgba(var(--creme-fixo-rgb), 0.25);
+  overflow: hidden;
+}
+
+.live-effort-bar__progress-fill {
+  height: 100%;
+  width: 100%;
+  background-color: var(--energia-fg);
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+@media (max-height: 699px) {
+  .live-screen {
+    padding-bottom: calc(16px + var(--safe-bottom));
+  }
+  .live-topbar {
+    min-height: calc(50px + var(--safe-top));
+  }
+  .live-ex-progress-row {
+    margin-top: 2px;
+    margin-bottom: 4px;
+  }
+  .live-exercise-body {
+    gap: 6px;
+  }
+  .live-exercise-left-col {
+    gap: 6px;
+  }
+  .live-exercise-right-col {
+    gap: 6px;
+  }
+  .live-demo-zone {
+    min-height: 92px;
+    max-height: 46dvh;
+    padding: 4px 10px;
+  }
+  .live-screen--exercise.has-effort-open .live-demo-zone {
+    min-height: 44px;
+    max-height: 48px;
+    padding: 2px;
+  }
+  .live-h1-exercise {
+    font-size: 22px;
+    line-height: 25px;
+    -webkit-line-clamp: 1;
+  }
+  .live-metric-card {
+    min-height: 112px;
+    max-height: 128px;
+    padding: 8px 10px;
+    border-radius: 20px;
+    gap: 4px;
+  }
+  .live-metric-number {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  .live-support-chip--normal-pair {
+    display: none !important;
+  }
+  .live-support-chip--compact-single {
+    display: inline-flex !important;
+  }
+  .live-giant-footer {
+    padding-top: 4px;
+    gap: 6px;
+  }
+  .live-giant-btn {
+    height: 72px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-height: 599px) {
+  .live-giant-btn {
+    height: 56px;
+    border-radius: 18px;
+    font-size: 20px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .live-screen {
+    max-width: 100%;
+    padding: 4px 20px calc(10px + var(--safe-bottom));
+  }
+  .live-topbar {
+    min-height: 44px;
+  }
+  .live-ex-progress-row {
+    margin-top: 2px;
+    margin-bottom: 4px;
+  }
+  .live-exercise-body {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .live-exercise-left-col {
+    flex: 0 0 42%;
+    max-width: 42%;
+    justify-content: space-between;
+  }
+  .live-exercise-right-col {
+    flex: 1 1 58%;
+    min-width: 0;
+    justify-content: space-between;
+    margin-top: 0;
+    gap: 6px;
+  }
+  .live-demo-zone {
+    min-height: 96px;
+    max-height: 160px;
+    flex: 1 1 auto;
+  }
+  .live-metric-card {
+    min-height: 108px;
+    max-height: 120px;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  .live-metric-number {
+    font-size: 28px;
+    line-height: 28px;
+  }
+  .live-giant-btn {
+    height: 56px;
+    border-radius: 18px;
+    font-size: 20px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   B11 & M3 — DESCANSO AUTOMÁTICO
+   -------------------------------------------------------------------------- */
+.live-enter-up-360 {
+  animation: liveSlideUp360 360ms var(--ease-out) both;
+}
+
+@keyframes liveSlideUp360 {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.live-rest-hero {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  padding-top: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.live-rest-ring-stage {
+  position: relative;
+  width: clamp(152px, 24.5dvh, 236px);
+  height: clamp(152px, 24.5dvh, 236px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-rest-shader-circle {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.live-rest-scene-p-wrap {
+  position: absolute;
+  inset: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.live-rest-ring-svg {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.live-rest-ring-center {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.live-rest-timer-digits {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 8.2dvh, 78px);
+  line-height: 1;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--energia-fg);
+}
+
+.live-breath-pill {
+  transition: opacity 400ms var(--ease-out);
+}
+
+.live-rest-adjust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.live-rest-delta-chip {
+  width: 96px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.45);
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.live-rest-skip-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.live-skip-rest-btn {
+  width: 220px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background-color: transparent;
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.6);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.live-rest-bottom {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.live-next-set-card {
+  min-height: 76px;
+  border-radius: 24px;
+  background-color: var(--energia-chip);
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.32);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.live-next-set-card__formula {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 600;
+  color: var(--energia-fg);
+  margin-top: 4px;
+}
+
+.live-next-set-card__LoadBtns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-mini-step-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--energia-fg);
+  color: var(--energia-chip);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.live-rest-tip-row {
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   B12 — TRANSIÇÃO ENTRE EXERCÍCIOS
+   -------------------------------------------------------------------------- */
+.live-achievement-banner {
+  border-radius: 24px;
+  background-color: var(--energia-chip);
+  border: 1.5px solid rgba(var(--creme-fixo-rgb), 0.35);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.live-achievement-check {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--energia-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.live-check-draw-360 {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: liveDrawCheck 360ms var(--ease-out) forwards;
+}
+
+@keyframes liveDrawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.live-achievement-stats {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 600;
+  color: var(--energia-fg);
+  margin-top: 2px;
+}
+
+.live-next-exercise-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.live-next-exercise-scene {
+  width: 100%;
+  height: clamp(120px, 22dvh, 190px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-next-exercise-meta {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.live-wait-btn {
+  min-height: 48px;
+  padding: 0 18px;
+  cursor: pointer;
+}
+
+.live-auto-bar-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: rgba(var(--creme-fixo-rgb), 0.25);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.live-auto-bar-fill {
+  width: 100%;
+  height: 100%;
+  background-color: var(--energia-fg);
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------------------
+   B13 — TELA DE PAUSA
+   -------------------------------------------------------------------------- */
+.live-pause-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.live-pause-clock,
+.is-pulsing-pause {
+  font-family: var(--font-display);
+  font-size: 80px;
+  line-height: 80px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--energia-fg);
+  animation: livePausePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes livePausePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.live-pause-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 600;
+  color: var(--energia-fg);
+}
+
+.live-pause-sub {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 16px;
+  background-color: var(--energia-chip);
+  color: var(--energia-fg);
+  font-size: 15px;
+  line-height: 22px;
+  max-width: 300px;
+}
+
+/* --------------------------------------------------------------------------
+   B10 — FOLHA "COMO FAZER"
+   -------------------------------------------------------------------------- */
+.live-howto-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.live-howto-scene-box {
+  width: 100%;
+  height: 180px;
+  border-radius: 24px;
+  background: var(--ill-palco);
+  background-color: var(--superficie-2);
+  border: 1px solid var(--linha);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.live-howto-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.live-howto-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.live-howto-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--terracota-suave);
+  color: var(--terracota-texto);
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.live-howto-step-text {
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--tinta);
+}
+
+.live-howto-error-box {
+  padding: 12px 16px;
+  border-radius: 18px;
+  background-color: var(--terracota-suave);
+  border: 1px solid var(--terracota);
+}
+
+/* --------------------------------------------------------------------------
+   B14 — RESUMO PÓS-TREINO (SEGUE O TEMA ESCURO/CLARO)
+   -------------------------------------------------------------------------- */
+.live-summary-shell {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  background-color: var(--fundo);
+  color: var(--tinta);
+  padding: 0 20px 112px;
+}
+
+.live-clip-circle-reveal {
+  animation: liveCircleExpand600 600ms var(--ease-out) both;
+}
+
+@keyframes liveCircleExpand600 {
+  0% {
+    clip-path: circle(0% at 50% 88%);
+  }
+  100% {
+    clip-path: circle(150% at 50% 88%);
+  }
+}
+
+.live-summary-content {
+  position: relative;
+  z-index: 2;
+}
+
+.live-summary-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.live-summary-metric-card {
+  height: 96px;
+  border-radius: 24px;
+  background-color: var(--superficie);
+  border: 1px solid var(--linha);
+  box-shadow: var(--shadow-suave);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.live-summary-metric-val {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 600;
+  color: var(--tinta);
+  font-variant-numeric: tabular-nums;
+}
+
+.live-summary-ex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--linha);
+}
+
+.live-summary-ex-row:last-child {
+  border-bottom: none;
+}
+
+.live-summary-record-card {
+  border-radius: 24px;
+  background-color: var(--superficie-2);
+  border: 1.5px solid var(--terracota);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--vidro-sombra-interna), var(--shadow-suave);
+}
+
+.live-summary-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  padding: 16px 20px calc(20px + var(--safe-bottom));
+  background: linear-gradient(180deg, rgba(var(--fundo-rgb), 0) 0%, var(--fundo) 24px, var(--fundo) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   B15 — CELEBRAÇÃO (SEGUE O TEMA ESCURO/CLARO)
+   -------------------------------------------------------------------------- */
+.live-celebrate-shell {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  background: linear-gradient(180deg, var(--salvia-suave) 0%, var(--fundo) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.live-celebrate-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.live-celebrate-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+.live-scene-n-sun {
+  animation: liveSunRise 1400ms var(--ease-out) both;
+}
+
+@keyframes liveSunRise {
+  from {
+    transform: translateY(36px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   ANIMAÇÕES DE 2s DAS CENAS DO MODO ENERGIA
+   -------------------------------------------------------------------------- */
+@keyframes livePeito2s {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(14px);
+  }
+}
+
+@keyframes liveCostas2s {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(16px);
+  }
+}
+
+@keyframes liveOmbrosLeft2s {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(75deg);
+  }
+}
+
+@keyframes liveOmbrosRight2s {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-75deg);
+  }
+}
+
+@keyframes liveBracos2s {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-88deg);
+  }
+}
+
+@keyframes livePernas2s {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+@keyframes liveCoreWave2s {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+}
+
+@keyframes liveCorrida2s {
+  0% {
+    transform: translateX(6px);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes liveMob2s {
+  0%, 100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes liveScenePBreath8s {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.live-anim-peito-2s {
+  animation: livePeito2s 2s ease-in-out infinite;
+}
+.live-anim-costas-2s {
+  animation: liveCostas2s 2s ease-in-out infinite;
+}
+.live-anim-ombros-left-2s {
+  animation: liveOmbrosLeft2s 2s ease-in-out infinite;
+}
+.live-anim-ombros-right-2s {
+  animation: liveOmbrosRight2s 2s ease-in-out infinite;
+}
+.live-anim-bracos-2s {
+  animation: liveBracos2s 2s ease-in-out infinite;
+}
+.live-anim-pernas-2s {
+  animation: livePernas2s 2s ease-in-out infinite;
+}
+.live-anim-core-wave-2s {
+  transform-origin: 160px 92px;
+  animation: liveCoreWave2s 2s ease-out infinite;
+}
+.live-anim-core-wave-2s-delayed {
+  transform-origin: 160px 92px;
+  animation: liveCoreWave2s 2s ease-out 0.6s infinite;
+}
+.live-anim-corrida-2s {
+  animation: liveCorrida2s 0.9s linear infinite;
+}
+.live-anim-mob-2s {
+  animation: liveMob2s 2s ease-in-out infinite;
+}
+.live-scene-p-breath {
+  animation: liveScenePBreath8s 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-anim-peito-2s,
+  .live-anim-costas-2s,
+  .live-anim-ombros-left-2s,
+  .live-anim-ombros-right-2s,
+  .live-anim-bracos-2s,
+  .live-anim-pernas-2s,
+  .live-anim-core-wave-2s,
+  .live-anim-core-wave-2s-delayed,
+  .live-anim-corrida-2s,
+  .live-anim-mob-2s,
+  .live-scene-p-breath,
+  .live-serie-dot--current,
+  .live-pause-clock,
+  .is-pulsing-pause,
+  .live-clip-circle-reveal,
+  .live-enter-up-360,
+  .live-scene-n-sun {
+    animation: none !important;
+  }
+}

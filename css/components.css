@@ -1,0 +1,1053 @@
+/* ==========================================================================
+   CLAY FIT — BIBLIOTECA DE COMPONENTES "STUDIO CLAY" & "STUDIO CLAY NOITE"
+   /css/components.css
+   Especificação Prompt 5 (Parte A2, A3, A4, B1, C1, C2):
+   - Zero cores hex fixas (100% var(--token)).
+   - Botões primários com gradiente e brilho terracota no escuro; pulso 1->1.03->1
+     ao habilitar na introdução.
+   - Cartões de escolha de 72px (raio 24px), selecionado com borda terracota 2px
+     e fundo --terracota-suave.
+   - Folhas inferiores e cabeçalhos colapsáveis em superfície de vidro (--vidro-bg)
+     com fallback sólido (@supports) e handle de 36×4px.
+   - Toasts em --superficie-2 com borda --linha, texto --tinta e ação em --areia.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. BARRA SUPERIOR DE ANATOMIA FIXA (56px + safe-area-top)
+   -------------------------------------------------------------------------- */
+.c-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 820;
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  min-height: calc(56px + var(--safe-top));
+  padding-top: var(--safe-top);
+  margin-bottom: var(--sp-16);
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
+}
+
+.c-topbar.is-scrolled {
+  background-color: var(--superficie-2);
+  border-bottom-color: var(--vidro-borda);
+  box-shadow: var(--vidro-sombra-interna);
+  margin-inline: -20px;
+  padding-inline: 20px;
+}
+
+@supports (backdrop-filter: blur(18px)) or (-webkit-backdrop-filter: blur(18px)) {
+  .c-topbar.is-scrolled {
+    background-color: var(--vidro-bg);
+    backdrop-filter: var(--vidro-blur);
+    -webkit-backdrop-filter: var(--vidro-blur);
+  }
+}
+
+[data-mode="energia"] .c-topbar.is-scrolled,
+.modo-energia .c-topbar.is-scrolled {
+  background-color: rgba(var(--terracota-rgb), 0.92);
+  border-bottom-color: rgba(var(--creme-fixo-rgb), 0.22);
+}
+
+.c-topbar__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition:
+    transform var(--dur-touch) var(--ease-out),
+    background-color var(--dur-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .c-topbar__icon-btn:hover {
+    background-color: var(--bg-card-alt);
+  }
+}
+
+.c-topbar__title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-inline: 8px;
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out);
+}
+
+.c-topbar__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 48px;
+}
+
+/* --------------------------------------------------------------------------
+   1. BOTÕES (Primário com brilho terracota no escuro, Secundário, Fantasma, Gigante)
+   -------------------------------------------------------------------------- */
+.c-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-12);
+  min-height: 56px;
+  min-width: 48px;
+  padding: 0 var(--sp-24);
+  border-radius: var(--r-btn);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-touch) var(--ease-out),
+    background-color var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out),
+    color var(--dur-state) var(--ease-out),
+    box-shadow var(--dur-state) var(--ease-out),
+    opacity var(--dur-state) var(--ease-out);
+}
+
+.c-btn--full {
+  width: 100%;
+}
+
+.c-btn--primary {
+  background: var(--btn-primario-bg);
+  background-color: var(--terracota);
+  color: var(--creme-fixo);
+  box-shadow: var(--btn-primario-shadow);
+}
+
+@media (hover: hover) {
+  .c-btn--primary:hover:not(:disabled):not(.is-disabled):not(.is-loading) {
+    background: var(--btn-primario-bg);
+    background-color: var(--terracota);
+    filter: brightness(1.04);
+  }
+}
+.c-btn--primary.is-hover {
+  background: var(--btn-primario-bg);
+  background-color: var(--terracota);
+  filter: brightness(1.04);
+}
+
+.c-btn--secondary {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--linha);
+}
+
+@media (hover: hover) {
+  .c-btn--secondary:hover:not(:disabled):not(.is-disabled):not(.is-loading) {
+    background-color: var(--bg-card-alt);
+  }
+}
+.c-btn--secondary.is-hover {
+  background-color: var(--bg-card-alt);
+}
+
+.c-btn--ghost {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: transparent;
+  min-height: 48px;
+  padding: 0 var(--sp-16);
+}
+
+@media (hover: hover) {
+  .c-btn--ghost:hover:not(:disabled):not(.is-disabled):not(.is-loading) {
+    background-color: var(--bg-card-alt);
+  }
+}
+.c-btn--ghost.is-hover {
+  background-color: var(--bg-card-alt);
+}
+
+.c-btn--danger-ghost {
+  background-color: transparent;
+  color: var(--erro);
+  border-color: transparent;
+}
+
+@media (hover: hover) {
+  .c-btn--danger-ghost:hover:not(:disabled) {
+    background-color: var(--erro-suave);
+  }
+}
+
+.c-btn--giant {
+  width: 100%;
+  min-height: 88px;
+  border-radius: var(--r-btn-giant);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  background: var(--btn-primario-bg);
+  background-color: var(--terracota);
+  color: var(--creme-fixo);
+  box-shadow: var(--btn-primario-shadow);
+}
+
+[data-mode="energia"] .c-btn--giant,
+.modo-energia .c-btn--giant {
+  background: var(--energia-fg);
+  background-color: var(--energia-fg);
+  color: var(--carvao-fixo);
+}
+
+.c-btn.is-pressed,
+.c-btn:active:not(:disabled):not(.is-disabled):not(.is-loading) {
+  transform: scale(0.97);
+  box-shadow: var(--btn-primario-shadow-pressed);
+}
+
+.c-btn:focus-visible,
+.c-btn.is-focused {
+  outline: 3px solid var(--terracota-texto);
+  outline-offset: 3px;
+}
+
+.c-btn:disabled,
+.c-btn.is-disabled,
+.c-btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+@keyframes clayBtnEnablePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.c-btn.is-enable-pulsing {
+  animation: clayBtnEnablePulse 360ms var(--ease-clay);
+}
+
+.c-btn.is-loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.c-btn.is-loading .c-btn__label {
+  opacity: 0;
+}
+
+.c-btn__spinner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  animation: claySpin 700ms linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   2. CARTÕES COM LUZ DE ARGILA E CARTÕES DE VIDRO
+   -------------------------------------------------------------------------- */
+.c-card {
+  position: relative;
+  background-color: var(--bg-card);
+  background-image: var(--card-luz-argila);
+  color: var(--text-primary);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-card);
+  padding: var(--sp-24);
+  box-shadow: var(--shadow-suave);
+  overflow: hidden;
+  transition:
+    transform var(--dur-touch) var(--ease-out),
+    box-shadow var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out);
+}
+
+.c-card--interactive {
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .c-card--interactive:hover:not(.is-disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevada);
+    border-color: var(--tinta-3);
+  }
+}
+
+.c-card--interactive.is-pressed,
+.c-card.is-pressed {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-suave);
+}
+
+.c-card--featured,
+.c-card--glass {
+  border-radius: 36px 28px 40px 28px;
+  background-color: var(--superficie-2);
+  border: 1px solid var(--vidro-borda);
+  box-shadow: var(--vidro-sombra-interna), var(--shadow-elevada);
+}
+
+@supports (backdrop-filter: blur(18px)) or (-webkit-backdrop-filter: blur(18px)) {
+  .c-card--featured,
+  .c-card--glass {
+    background-color: var(--vidro-bg);
+    backdrop-filter: var(--vidro-blur);
+    -webkit-backdrop-filter: var(--vidro-blur);
+  }
+}
+
+.c-card.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. CHIP SELECIONÁVEL
+   -------------------------------------------------------------------------- */
+.c-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+}
+
+.c-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--r-chip);
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    transform var(--dur-touch) var(--ease-out),
+    background-color var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out),
+    color var(--dur-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .c-chip:hover:not(:disabled):not(.is-disabled) {
+    border-color: var(--tinta-3);
+    background-color: var(--bg-card-alt);
+  }
+}
+.c-chip.is-hover {
+  border-color: var(--tinta-3);
+  background-color: var(--bg-card-alt);
+}
+
+.c-chip.is-pressed {
+  transform: scale(0.97);
+}
+
+.c-chip[aria-pressed="true"],
+.c-chip.is-selected {
+  background-color: var(--terracota-suave);
+  color: var(--tinta);
+  border-color: var(--terracota);
+}
+
+[data-mode="energia"] .c-chip[aria-pressed="true"],
+[data-mode="energia"] .c-chip.is-selected,
+.modo-energia .c-chip[aria-pressed="true"],
+.modo-energia .c-chip.is-selected {
+  background-color: var(--energia-fg);
+  color: var(--carvao-fixo);
+  border-color: var(--energia-fg);
+}
+
+.c-chip:disabled,
+.c-chip.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. CARTÃO DE ESCOLHA (B1: 72px, raio 24px, selecionado borda terracota 2px e --terracota-suave)
+   -------------------------------------------------------------------------- */
+.c-choice-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 72px;
+  padding: 14px 18px;
+  border-radius: 24px;
+  background-color: var(--superficie);
+  color: var(--tinta);
+  border: 1.5px solid var(--linha);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform var(--dur-touch) var(--ease-out),
+    background-color var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out),
+    box-shadow var(--dur-state) var(--ease-out),
+    opacity 160ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .c-choice-card:hover:not(:disabled):not(.is-disabled) {
+    border-color: var(--tinta-3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-suave);
+  }
+}
+.c-choice-card.is-hover {
+  border-color: var(--tinta-3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-suave);
+}
+
+.c-choice-card.is-pressed,
+.c-choice-card:active:not(:disabled):not(.is-disabled) {
+  transform: scale(0.98);
+}
+
+.c-choice-card:focus-visible,
+.c-choice-card.is-focused {
+  outline: 3px solid var(--terracota-texto);
+  outline-offset: 3px;
+}
+
+.c-choice-card[aria-checked="true"],
+.c-choice-card.is-selected {
+  border-width: 2px;
+  border-color: var(--terracota);
+  background-color: var(--terracota-suave);
+  box-shadow: 0 0 0 1px rgba(var(--terracota-rgb), 0.22), var(--shadow-suave);
+}
+
+.c-choice-card.is-dimmed {
+  opacity: 0.45;
+}
+
+.c-choice-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--salvia-suave);
+  color: var(--tinta);
+  flex-shrink: 0;
+  transition:
+    background-color var(--dur-state) var(--ease-out),
+    color var(--dur-state) var(--ease-out);
+}
+
+.c-choice-card[aria-checked="true"] .c-choice-card__icon,
+.c-choice-card.is-selected .c-choice-card__icon {
+  background-color: var(--terracota-suave);
+  color: var(--terracota-texto);
+}
+
+.c-choice-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.c-choice-card__title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+  color: var(--tinta);
+}
+
+.c-choice-card__subtitle {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--tinta-2);
+  margin-top: 2px;
+}
+
+.c-choice-card__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--linha);
+  background-color: transparent;
+  color: var(--creme-fixo);
+  flex-shrink: 0;
+  transition:
+    background-color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
+}
+
+.c-choice-card__check svg path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset 240ms var(--ease-out);
+}
+
+.c-choice-card[aria-checked="true"] .c-choice-card__check,
+.c-choice-card.is-selected .c-choice-card__check {
+  background-color: var(--terracota);
+  border-color: var(--terracota);
+}
+
+.c-choice-card[aria-checked="true"] .c-choice-card__check svg path,
+.c-choice-card.is-selected .c-choice-card__check svg path {
+  stroke-dashoffset: 0;
+}
+
+.c-choice-card:disabled,
+.c-choice-card.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. FAIXA DE CHECK-IN EM HOJE (88px -> chip de 56px)
+   -------------------------------------------------------------------------- */
+.c-checkin-strip {
+  position: relative;
+  min-height: 88px;
+  border-radius: 24px;
+  padding: 14px 20px;
+  background-color: var(--superficie);
+  border: 1px solid var(--linha);
+  box-shadow: var(--shadow-suave);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  transition:
+    min-height 360ms var(--ease-out),
+    background-color 360ms var(--ease-out),
+    padding 360ms var(--ease-out);
+}
+
+.c-checkin-strip__title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--tinta);
+}
+
+.c-checkin-strip__faces {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.checkin-face-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--tinta-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    opacity 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+
+.checkin-face-btn[aria-checked="true"] {
+  border-color: var(--terracota);
+  box-shadow: 0 0 0 2px var(--terracota-suave);
+}
+
+.checkin-face-btn.is-faded {
+  opacity: 0.5;
+}
+
+.c-checkin-chip-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--tinta);
+  box-shadow: var(--shadow-suave);
+  transition: transform var(--dur-touch) var(--ease-out);
+}
+
+.c-checkin-chip-bar--boa {
+  background-color: var(--salvia-suave);
+  border-color: var(--salvia);
+}
+
+.c-checkin-chip-bar--media {
+  background-color: var(--areia-suave);
+  border-color: var(--areia);
+}
+
+.c-checkin-chip-bar--baixa {
+  background-color: var(--terracota-suave);
+  border-color: var(--terracota);
+}
+
+/* --------------------------------------------------------------------------
+   6. ANEL DE PROGRESSO ANIMADO & BARRA DE PROGRESSO
+   -------------------------------------------------------------------------- */
+.c-progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.c-progress-ring__svg {
+  transform: rotate(-90deg);
+}
+
+.c-progress-ring__track {
+  fill: none;
+  stroke: var(--superficie-2);
+}
+
+.c-progress-ring__fill {
+  fill: none;
+  stroke: var(--terracota);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 600ms var(--ease-out);
+}
+
+.c-progress-ring__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c-progress-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+  width: 100%;
+}
+
+.c-progress-bar__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--fs-small);
+  color: var(--text-secondary);
+}
+
+.c-progress-bar__track {
+  width: 100%;
+  height: 10px;
+  border-radius: var(--r-chip);
+  background-color: var(--bg-card-alt);
+  overflow: hidden;
+}
+
+.c-progress-bar__fill {
+  height: 100%;
+  border-radius: var(--r-chip);
+  background-color: var(--terracota);
+  transition: width 600ms var(--ease-out);
+}
+
+.c-progress-bar--salvia .c-progress-bar__fill {
+  background-color: var(--salvia);
+}
+
+/* --------------------------------------------------------------------------
+   7. TOGGLE & CONTADOR +/-
+   -------------------------------------------------------------------------- */
+.c-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-16);
+  min-height: 56px;
+}
+
+.c-toggle__btn {
+  position: relative;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--r-chip);
+  background-color: var(--bg-card-alt);
+  border: 1.5px solid var(--border-color);
+  padding: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out);
+}
+
+.c-toggle__btn::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+.c-toggle__thumb {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--tinta);
+  box-shadow: 0 2px 6px var(--sombra-cor);
+  transition: transform var(--dur-state) var(--ease-out), background-color var(--dur-state) var(--ease-out);
+}
+
+.c-toggle__btn[aria-checked="true"],
+.c-toggle__btn.is-on {
+  background-color: var(--terracota);
+  border-color: var(--terracota);
+}
+
+.c-toggle__btn[aria-checked="true"] .c-toggle__thumb,
+.c-toggle__btn.is-on .c-toggle__thumb {
+  transform: translateX(24px);
+  background-color: var(--creme-fixo);
+}
+
+.c-toggle__btn:disabled,
+.c-toggle.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.c-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: var(--sp-8);
+  border-radius: 20px;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+}
+
+.c-stepper__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card-alt);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.c-stepper__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.c-stepper__display {
+  min-width: 84px;
+  text-align: center;
+}
+
+.c-stepper__value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.c-stepper__unit {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. FOLHA INFERIOR ARRASTÁVEL (A2 & A4: Vidro com handle de 36×4px)
+   -------------------------------------------------------------------------- */
+.c-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--backdrop-scrim);
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms var(--ease-out);
+}
+
+.c-sheet-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.c-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  background-color: var(--superficie-2);
+  color: var(--tinta);
+  border-radius: 32px 32px 0 0;
+  border-top: 1px solid var(--vidro-borda);
+  box-shadow: var(--vidro-sombra-interna), var(--shadow-elevada);
+  z-index: 1201;
+  transform: translateY(100%);
+  transition: transform 360ms var(--ease-out);
+  max-height: 82dvh;
+  display: flex;
+  flex-direction: column;
+  overscroll-behavior: contain;
+}
+
+@supports (backdrop-filter: blur(18px)) or (-webkit-backdrop-filter: blur(18px)) {
+  .c-sheet {
+    background-color: rgba(var(--superficie-2-rgb), 0.88);
+    backdrop-filter: var(--vidro-blur);
+    -webkit-backdrop-filter: var(--vidro-blur);
+  }
+}
+
+.c-sheet.is-open {
+  transform: translateY(0);
+}
+
+.c-sheet__drag-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px 6px;
+  cursor: grab;
+  touch-action: none;
+  min-height: 36px;
+}
+
+.c-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--tinta-3);
+  opacity: 0.55;
+}
+
+.c-sheet__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 24px 16px;
+  border-bottom: 1px solid var(--linha);
+  touch-action: none;
+  cursor: grab;
+}
+
+.c-sheet__body {
+  padding: 20px 24px calc(24px + var(--safe-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* --------------------------------------------------------------------------
+   9. TOAST (A4: fundo --superficie-2 com borda, texto --tinta, ação --areia)
+   -------------------------------------------------------------------------- */
+.c-toast-Stack {
+  position: fixed;
+  bottom: calc(var(--nav-mobile-h) + var(--safe-bottom) + 16px);
+  left: 20px;
+  right: 20px;
+  max-width: 440px;
+  margin: 0 auto;
+  z-index: 1650;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+html[data-mode="energia"] .c-toast-Stack,
+body.modo-energia .c-toast-Stack {
+  top: var(--live-toast-top, calc(env(safe-area-inset-top, 0px) + 58px));
+  bottom: auto;
+  left: 12px;
+  right: auto;
+  width: auto;
+  max-width: 260px;
+  margin: 0;
+  align-items: flex-start;
+  z-index: 1650;
+}
+
+.c-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 4px 18px;
+  border-radius: 16px;
+  background-color: var(--superficie-2);
+  border: 1px solid var(--linha);
+  color: var(--tinta);
+  box-shadow: var(--shadow-elevada);
+  font-size: 15px;
+  font-weight: 500;
+  animation: clayToastUp 220ms var(--ease-out) forwards;
+}
+
+html[data-mode="energia"] .c-toast,
+body.modo-energia .c-toast,
+.c-toast--energia {
+  width: auto;
+  min-width: 200px;
+  max-width: 260px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 22px;
+  background-color: var(--carvao-fixo);
+  border: 1px solid rgba(var(--creme-fixo-rgb), 0.16);
+  color: var(--energia-fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  gap: 10px;
+  cursor: pointer;
+  animation: clayToastTopIn 160ms var(--ease-out) forwards;
+}
+
+.c-toast--gold {
+  background-color: var(--carvao-fixo) !important;
+  border: 1.5px solid var(--areia);
+  color: var(--energia-fg) !important;
+}
+
+@keyframes clayToastUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clayToastTopIn {
+  from {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.c-toast__msg {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c-toast__action {
+  background: transparent;
+  border: none;
+  color: var(--areia);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  min-height: 48px;
+  padding: 0 8px;
+  margin-block: -2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   10. FAIXA OFFLINE NO TOPO (altura 36px)
+   -------------------------------------------------------------------------- */
+.c-offline-banner {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  background-color: var(--superficie-2);
+  border-bottom: 1px solid var(--linha);
+  color: var(--tinta);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  z-index: 1700;
+}
+
+body.is-offline .c-offline-banner {
+  display: flex;
+}

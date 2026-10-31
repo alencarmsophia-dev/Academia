@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="escuro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0F0E0D" />
+  <title>Clay Fit — Sistema de Design v0.6.0 (Studio Clay Noite &amp; Claro + Biblioteca)</title>
+
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('clay_fit_store_v5');
+        var tema = raw ? (JSON.parse(raw).perfil || {}).tema : 'escuro';
+        var claro =
+          tema === 'claro' ||
+          (tema === 'automatico' &&
+            window.matchMedia('(prefers-color-scheme: light)').matches);
+        var t = claro ? 'claro' : 'escuro';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'escuro');
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./css/tokens.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/motion.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+  <link rel="stylesheet" href="./css/screens.css" />
+  <link rel="stylesheet" href="./css/live.css" />
+  <link rel="stylesheet" href="./css/run.css" />
+
+  <style>
+    .dg-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 24px 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .dg-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--linha);
+    }
+    .dg-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .dg-section__head {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--linha);
+    }
+    .dg-side-by-side {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 24px;
+    }
+    .dg-theme-pane {
+      background: var(--fundo);
+      color: var(--tinta);
+      border: 1px solid var(--linha);
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--sombra-2);
+    }
+    .dg-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .dg-swatch {
+      background: var(--superficie);
+      border: 1px solid var(--linha);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .dg-swatch__color {
+      height: 52px;
+      border-bottom: 1px solid var(--linha);
+    }
+    .dg-swatch__info {
+      padding: 10px 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dg-wrap">
+    <header class="dg-topbar">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span id="dg-brand-slot"></span>
+        <div>
+          <div class="t-caption" style="color:var(--terracota-texto);">STUDIO CLAY NOITE &amp; CLARO · V0.6.0</div>
+          <h1 class="t-h2">Sistema de Design, Nova Biblioteca (Lote 1), Mapas Musculares e Dois Temas</h1>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <button type="button" id="dg-toggle-theme" class="c-btn c-btn--primary" style="min-height:48px;">
+          Alternar Tema Global
+        </button>
+        <a href="./index.html#/biblioteca" class="c-btn c-btn--secondary" style="min-height:48px;">
+          Abrir Biblioteca →
+        </a>
+      </div>
+    </header>
+
+    <div id="dg-root"></div>
+  </div>
+
+  <script type="module">
+    import { initThemeSystem, aplicarTema, temaAtivo } from './js/ui/theme.js';
+    import { initMonochromeGrain, initGlobalTouchFeedback } from './js/motion.js';
+    import { getBrandMarkSvg, getIconSvg, renderSceneJ } from './js/ui/illustrations.js';
+    import { renderChoiceCard } from './js/ui/choice-card.js';
+    import { renderExercicioRow } from './js/ui/exercicio-row.js';
+    import { renderMapaMuscular } from './js/ui/mapa-muscular.js';
+    import { renderRoutineCardScene } from './js/ui/biblioteca.js';
+
+    initThemeSystem();
+    initMonochromeGrain();
+    initGlobalTouchFeedback();
+
+    document.getElementById('dg-brand-slot').innerHTML = getBrandMarkSvg(42);
+
+    const SAMPLE_EX_PEITO = {
+      id: 'peito-supino-reto',
+      nome: 'Supino reto com barra',
+      grupo: 'Peito',
+      musculoPrincipal: 'Peitoral',
+      musculosSecundarios: ['Tríceps', 'Deltoide anterior'],
+      equipamentoTipo: 'Barra',
+      nivel: 'Intermediário'
+    };
+
+    const SAMPLE_EX_COSTAS = {
+      id: 'costas-puxada-alta',
+      nome: 'Puxada frontal aberta na polia',
+      grupo: 'Costas',
+      musculoPrincipal: 'Dorsais',
+      musculosSecundarios: ['Bíceps', 'Romboides'],
+      equipamentoTipo: 'Polia',
+      nivel: 'Iniciante'
+    };
+
+    const TOKENS_LIST = [
+      { name: 'Fundo', varName: '--fundo' },
+      { name: 'Superfície', varName: '--superficie' },
+      { name: 'Superfície 2', varName: '--superficie-2' },
+      { name: 'Tinta', varName: '--tinta' },
+      { name: 'Tinta 2', varName: '--tinta-2' },
+      { name: 'Tinta 3', varName: '--tinta-3' },
+      { name: 'Linha', varName: '--linha' },
+      { name: 'Terracota', varName: '--terracota' },
+      { name: 'Terracota Texto', varName: '--terracota-texto' },
+      { name: 'Sálvia', varName: '--salvia' },
+      { name: 'Sálvia Texto', varName: '--salvia-texto' },
+      { name: 'Areia', varName: '--areia' }
+    ];
+
+    function renderThemeColumn(themeKey, title) {
+      return `
+        <div class="dg-theme-pane" data-theme="${themeKey}">
+          <div>
+            <div class="t-caption" style="color:var(--terracota-texto);">TEMA ${themeKey.toUpperCase()}</div>
+            <h2 class="t-h2">${title}</h2>
+          </div>
+
+          <!-- 1. Tokens -->
+          <div class="dg-swatches">
+            ${TOKENS_LIST.map(
+              (t) => `
+                <div class="dg-swatch">
+                  <div class="dg-swatch__color" style="background:var(${t.varName});"></div>
+                  <div class="dg-swatch__info">
+                    <div style="font-size:13px; font-weight:600; color:var(--tinta);">${t.name}</div>
+                    <div style="font-size:11px; color:var(--tinta-3); font-family:monospace;">${t.varName}</div>
+                  </div>
+                </div>
+              `
+            ).join('')}
+          </div>
+
+          <!-- 2. Nova Biblioteca (Prompt 6): Mapa Muscular Grande 16:9 -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div class="t-caption" style="color:var(--terracota-texto);">MAPA MUSCULAR GRANDE (16:9 · FRENTE E COSTAS)</div>
+            <div class="ex-detail-hero-stage">
+              ${renderMapaMuscular(SAMPLE_EX_PEITO, { tamanho: 'grande' })}
+            </div>
+          </div>
+
+          <!-- 3. Nova Biblioteca (Prompt 6): Linhas de Exercício (80px, miniatura 64px) -->
+          <div style="display:flex; flex-direction:column; gap:8px;" role="list">
+            <div class="t-caption" style="color:var(--terracota-texto);">LINHA DE EXERCÍCIO (C3 · 80PX)</div>
+            ${renderExercicioRow(SAMPLE_EX_PEITO)}
+            ${renderExercicioRow(SAMPLE_EX_COSTAS)}
+          </div>
+
+          <!-- 4. Nova Biblioteca (Prompt 6): Cartões de Rotina (120px) e Chips-Filtro (44px) -->
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="t-caption" style="color:var(--terracota-texto);">CARTÕES DE ROTINA (120PX) &amp; CHIPS-FILTRO (44PX)</div>
+            <div class="lib-routines-grid">
+              <button type="button" class="lib-routine-card">
+                <div class="lib-routine-card__art">${renderRoutineCardScene('academia-completa')}</div>
+                <div class="lib-routine-card__info">
+                  <div class="lib-routine-card__title">Academia completa</div>
+                  <div class="lib-routine-card__meta"><span class="lib-routine-card__count">58 exercícios</span></div>
+                </div>
+              </button>
+              <button type="button" class="lib-routine-card is-soon" aria-disabled="true">
+                <div class="lib-routine-card__art">${renderRoutineCardScene('pernas-gluteos')}</div>
+                <div class="lib-routine-card__info">
+                  <div class="lib-routine-card__title">Pernas e glúteos</div>
+                  <div class="lib-routine-card__meta"><span class="lib-routine-card__badge-soon">Em breve</span></div>
+                </div>
+              </button>
+            </div>
+            <div class="lib-filter-chips-bar">
+              <button type="button" class="lib-filter-chip is-active">
+                <span>2 equipamentos</span>
+              </button>
+              <button type="button" class="lib-filter-chip">
+                <span>Todos os músculos</span>
+              </button>
+              <button type="button" class="lib-filter-chip">
+                <span>Todos os níveis</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Cartão de Vidro (Treino de Hoje) -->
+          <article class="workout-hero-card">
+            <div class="workout-hero-card__scene-top">
+              ${renderSceneJ('Peito')}
+            </div>
+            <div class="workout-hero-card__body" style="padding-bottom:20px;">
+              <div class="t-caption" style="color:var(--terracota-texto);">PEITO · SUPERFÍCIE DE VIDRO</div>
+              <h3 class="t-h2">Força Superior e Estabilidade</h3>
+              <div class="workout-meta-chips">
+                <span class="workout-meta-pill">45 min</span>
+                <span class="workout-meta-pill">6 exercícios</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6. Seletor Aparência (Perfil) -->
+          <div class="profile-appearance-card">
+            <div class="profile-appearance-title">Aparência</div>
+            <div class="theme-segmented-control">
+              <button type="button" class="theme-seg-btn ${themeKey === 'escuro' ? 'is-selected' : ''}">
+                ${getIconSvg('lua', 20)} <span>Escuro</span>
+              </button>
+              <button type="button" class="theme-seg-btn ${themeKey === 'claro' ? 'is-selected' : ''}">
+                ${getIconSvg('sol', 20)} <span>Claro</span>
+              </button>
+              <button type="button" class="theme-seg-btn">
+                ${getIconSvg('meio-circulo', 20)} <span>Automático</span>
+              </button>
+            </div>
+            <div class="profile-appearance-help">Automático segue o tema do seu celular.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById('dg-root').innerHTML = `
+      <section class="dg-section">
+        <div class="dg-section__head">
+          <div class="t-caption" style="color:var(--terracota-texto);">COMPARATIVO LADO A LADO (F4)</div>
+          <h2 class="t-h1">Studio Clay Noite (Escuro) vs. Studio Clay (Claro)</h2>
+        </div>
+        <div class="dg-side-by-side">
+          ${renderThemeColumn('escuro', 'Studio Clay Noite (Padrão)')}
+          ${renderThemeColumn('claro', 'Studio Clay Claro')}
+        </div>
+      </section>
+    `;
+
+    document.getElementById('dg-toggle-theme')?.addEventListener('click', () => {
+      const next = temaAtivo() === 'escuro' ? 'claro' : 'escuro';
+      aplicarTema(next);
+    });
+  </script>
+</body>
+</html>
